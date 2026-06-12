@@ -39,9 +39,9 @@ const models: ModelItem[] = [
 
 function ModelChip({ model }: { model: ModelItem }) {
   return (
-    <div className="shrink-0 flex items-center gap-2 px-3 py-1.5">
-      <model.Icon size={14} color="rgba(255,255,255,0.5)" />
-      <span className="text-white/40 text-xs font-medium font-[family-name:var(--font-space-grotesk)] tracking-wide">
+    <div className="shrink-0 flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-full border border-white/[0.04] mx-1.5">
+      <model.Icon size={16} color="rgba(255,255,255,0.45)" />
+      <span className="text-white/35 text-xs font-medium font-[family-name:var(--font-space-grotesk)] tracking-wide">
         {model.name}
       </span>
     </div>
@@ -50,16 +50,29 @@ function ModelChip({ model }: { model: ModelItem }) {
 
 export default function TrustedModelsBar() {
   return (
-    <section className="w-full bg-[#000] py-1 overflow-hidden -mt-4">
+    <section className="w-full bg-[#000] py-8 md:py-10 overflow-hidden -mt-6 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-8 mb-5">
+        <motion.p
+          className="text-center text-white/20 text-[11px] font-[family-name:var(--font-space-grotesk)] tracking-[0.2em] uppercase font-medium"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          Trusted by creators using the world&apos;s leading AI models
+        </motion.p>
+      </div>
       <motion.div
-        className="max-w-[1400px] mx-auto"
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        className="max-w-[1440px] mx-auto"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
         <div className="flex items-center justify-center">
-          <div className="flex-1 overflow-hidden relative max-w-[1400px]">
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#000] to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#000] to-transparent z-10 pointer-events-none" />
+          <div className="flex-1 overflow-hidden relative max-w-[1440px]">
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#000] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#000] to-transparent z-10 pointer-events-none" />
             <div className="flex animate-marquee">
               {models.map((m) => <ModelChip key={`a-${m.name}`} model={m} />)}
               {models.map((m) => <ModelChip key={`b-${m.name}`} model={m} />)}

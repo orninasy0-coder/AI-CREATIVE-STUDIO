@@ -40,32 +40,32 @@ const features: FeatureCard[] = [
 function Badge({ type }: { type: BadgeType }) {
   if (!type) return null;
   const cls = type === 'NEW' ? 'bg-[#D7FF00] text-black' : 'bg-[#FF3366] text-white';
-  return <span className={`${cls} text-[9px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}>{type}</span>;
+  return <span className={`${cls} text-[9px] font-bold px-2 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}>{type}</span>;
 }
 
 function SpecialCard({ card, index }: { card: FeatureCard; index: number }) {
   return (
     <motion.div
-      className="group bg-[#111] rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:bg-[#181818] relative flex flex-col justify-between min-h-[220px] border border-white/[0.04]"
+      className="group bg-[#111] rounded-2xl p-7 cursor-pointer transition-all duration-300 hover:bg-[#181818] relative flex flex-col justify-between min-h-[240px] border border-white/[0.04] sm:col-span-2"
       initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-20px' }}
       transition={{ duration: 0.4, delay: index * 0.05, ease: [0.25, 0.4, 0.25, 1] }}
     >
-      <div className="absolute top-5 right-5"><Badge type={card.badge} /></div>
+      <div className="absolute top-6 right-6"><Badge type={card.badge} /></div>
       <div>
-        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/[0.04] mb-4">
-          {card.LucideIcon && <card.LucideIcon className="w-5 h-5 text-[#D7FF00]" size={20} />}
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white/[0.04] mb-5">
+          {card.LucideIcon && <card.LucideIcon className="w-6 h-6 text-[#D7FF00]" size={24} />}
         </div>
-        <h3 className="text-white font-bold text-base font-[family-name:var(--font-space-grotesk)]">{card.title}</h3>
-        <p className="text-white/30 text-sm mt-1.5 font-[family-name:var(--font-inter)] leading-relaxed">{card.description}</p>
+        <h3 className="text-white font-bold text-lg font-[family-name:var(--font-space-grotesk)]">{card.title}</h3>
+        <p className="text-white/30 text-sm mt-2 font-[family-name:var(--font-inter)] leading-relaxed">{card.description}</p>
       </div>
-      <div className="flex items-center gap-2 mt-5">
-        <div className="w-6 h-6 rounded-full bg-[#FF3366]/10 flex items-center justify-center"><RecraftIcon size={11} color="#FF3366" /></div>
-        <div className="w-6 h-6 rounded-full bg-[#D7FF00]/10 flex items-center justify-center"><FluxIcon size={11} color="#D7FF00" /></div>
-        <div className="w-6 h-6 rounded-full bg-[#FF3366]/10 flex items-center justify-center"><KlingIcon size={11} color="#FF3366" /></div>
-        <div className="w-6 h-6 rounded-full bg-white/[0.04] flex items-center justify-center"><GrokIcon size={11} color="#fff" /></div>
+      <div className="flex items-center gap-3 mt-6">
+        <div className="w-8 h-8 rounded-full bg-[#FF3366]/10 flex items-center justify-center"><RecraftIcon size={12} color="#FF3366" /></div>
+        <div className="w-8 h-8 rounded-full bg-[#D7FF00]/10 flex items-center justify-center"><FluxIcon size={12} color="#D7FF00" /></div>
+        <div className="w-8 h-8 rounded-full bg-[#FF3366]/10 flex items-center justify-center"><KlingIcon size={12} color="#FF3366" /></div>
+        <div className="w-8 h-8 rounded-full bg-white/[0.04] flex items-center justify-center"><GrokIcon size={12} color="#fff" /></div>
       </div>
-      <button className="mt-4 bg-white text-black text-sm font-semibold px-5 py-2 rounded-lg flex items-center gap-1.5 hover:bg-white/90 transition-colors w-fit font-[family-name:var(--font-space-grotesk)]">
-        Try now <ArrowRight className="w-3.5 h-3.5" />
+      <button className="mt-5 bg-white text-black text-sm font-semibold px-6 py-2.5 rounded-xl flex items-center gap-2 hover:bg-[#D7FF00] transition-colors w-fit font-[family-name:var(--font-space-grotesk)]">
+        Try now <ArrowRight className="w-4 h-4" />
       </button>
     </motion.div>
   );
@@ -74,17 +74,18 @@ function SpecialCard({ card, index }: { card: FeatureCard; index: number }) {
 function FeatureCardComponent({ card, index }: { card: FeatureCard; index: number }) {
   return (
     <motion.div
-      className="group bg-[#111] rounded-2xl p-5 cursor-pointer transition-all duration-300 hover:bg-[#181818] relative border border-white/[0.04]"
+      className="group bg-[#111] rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:bg-[#181818] relative border border-white/[0.04]"
       initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-20px' }}
       transition={{ duration: 0.4, delay: index * 0.05, ease: [0.25, 0.4, 0.25, 1] }}
+      whileHover={{ y: -4 }}
     >
-      {card.badge && <div className="absolute top-4 right-4"><Badge type={card.badge} /></div>}
-      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/[0.04] mb-3">
+      {card.badge && <div className="absolute top-5 right-5"><Badge type={card.badge} /></div>}
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/[0.04] mb-4">
         {card.Icon ? <card.Icon size={18} color="rgba(255,255,255,0.7)" /> : card.LucideIcon ? <card.LucideIcon className="w-[18px] h-[18px] text-white/60" size={18} /> : null}
       </div>
       {card.category && <span className="text-white/20 text-[10px] font-[family-name:var(--font-inter)] uppercase tracking-wider">{card.category}</span>}
-      <h3 className="text-white font-semibold text-sm font-[family-name:var(--font-space-grotesk)] mt-0.5">{card.title}</h3>
-      <p className="text-white/25 text-xs mt-1 font-[family-name:var(--font-inter)] leading-relaxed">{card.description}</p>
+      <h3 className="text-white font-semibold text-sm font-[family-name:var(--font-space-grotesk)] mt-1">{card.title}</h3>
+      <p className="text-white/25 text-xs mt-2 font-[family-name:var(--font-inter)] leading-relaxed">{card.description}</p>
     </motion.div>
   );
 }
@@ -94,9 +95,9 @@ export default function AIModelsHub() {
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <section ref={ref} className="w-full bg-[#000] py-16 md:py-20">
-      <div className="px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
-        <motion.div className="flex items-end justify-between mb-8" initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
+    <section ref={ref} className="w-full bg-[#000] py-20 md:py-28">
+      <div className="px-5 sm:px-6 lg:px-8 max-w-[1440px] mx-auto">
+        <motion.div className="flex items-end justify-between mb-10 md:mb-12" initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
           <h2 className="font-[family-name:var(--font-space-grotesk)] text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
             All leading AI models.<br />One platform<span className="text-[#D7FF00]">.</span>
           </h2>
@@ -104,7 +105,7 @@ export default function AIModelsHub() {
             View all models <ArrowRight className="w-3.5 h-3.5" />
           </a>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((card, i) => card.isSpecial ? <SpecialCard key={card.title} card={card} index={i} /> : <FeatureCardComponent key={card.title} card={card} index={i} />)}
         </div>
       </div>

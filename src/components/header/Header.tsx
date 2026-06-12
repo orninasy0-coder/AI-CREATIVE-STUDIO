@@ -1,76 +1,25 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback, type ComponentType } from 'react';
+import React, { useState, useEffect, useCallback, type ComponentType } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Camera,
-  Film,
-  LayoutGrid,
-  User,
-  Sparkles,
-  Image as ImageIcon,
-  Sun,
-  Paintbrush,
-  Maximize,
-  Smile,
-  Users,
-  Pen,
-  Shirt,
-  Video,
-  Clapperboard,
-  Layers,
-  Scissors,
-  MousePointerClick,
-  TrendingUp,
-  Mic,
-  Pencil,
-  Play,
-  Wind,
-  RefreshCw,
-  Languages,
-  Menu,
-  ChevronDown,
-  Volume2,
-  Music,
-  Headphones,
-  Cpu,
-  Terminal,
-  Webhook,
-  Puzzle,
-  Code2,
+  Camera, Film, LayoutGrid, User, Sparkles, Image as ImageIcon,
+  Sun, Paintbrush, Maximize, Smile, Users, Pen, Shirt,
+  Video, Clapperboard, Scissors, MousePointerClick, TrendingUp,
+  Mic, RefreshCw, Languages, Menu, ChevronDown, Volume2, Music,
+  Cpu, Terminal, Webhook, Puzzle, Code2, Play, Wind,
   type LucideIcon,
 } from 'lucide-react';
 import {
-  OpenAIIcon,
-  FluxIcon,
-  MidjourneyIcon,
-  KlingIcon,
-  DeepMindIcon,
-  RunwayIcon,
-  ByteDanceIcon,
-  HunyuanIcon,
-  RecraftIcon,
-  GrokIcon,
-  SoraIcon,
-  ElevenLabsIcon,
-  MinimaxIcon,
-  HailuoIcon,
-  LumaIcon,
-  StabilityIcon,
-  IdeogramIcon,
-  SunoIcon,
-  UdioIcon,
-  CivitaiIcon,
-  ComfyUIIcon,
-  DoubaoIcon,
-  CogVideoIcon,
+  OpenAIIcon, FluxIcon, MidjourneyIcon, KlingIcon, DeepMindIcon,
+  RunwayIcon, ByteDanceIcon, HunyuanIcon, RecraftIcon, GrokIcon,
+  SoraIcon, ElevenLabsIcon, MinimaxIcon, HailuoIcon, LumaIcon,
+  StabilityIcon, IdeogramIcon, SunoIcon, UdioIcon, CivitaiIcon,
+  ComfyUIIcon, DoubaoIcon, CogVideoIcon,
 } from '@/components/icons/BrandIcons';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
+  Sheet, SheetContent, SheetHeader, SheetTitle,
 } from '@/components/ui/sheet';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -255,7 +204,7 @@ function NavBadge({ type, text }: { type: BadgeType; text?: string }) {
     'bg-[#FF3366] text-white';
 
   return (
-    <span className={`${style} text-[8px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase`}>
+    <span className={`${style} text-[9px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase ml-1.5`}>
       {text || type}
     </span>
   );
@@ -265,7 +214,7 @@ function NavBadge({ type, text }: { type: BadgeType; text?: string }) {
 
 function GridDotsIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="shrink-0">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0 mr-1">
       <rect x="1" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" />
       <rect x="8" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.6" />
       <rect x="1" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.6" />
@@ -279,13 +228,13 @@ function GridDotsIcon() {
 function MegaMenuItemRow({ item }: { item: MegaMenuItem }) {
   const IconComp = item.icon;
   return (
-    <div className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
       {IconComp && (
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/[0.04] group-hover:bg-white/[0.08] transition-colors shrink-0">
+        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/[0.04] group-hover:bg-white/[0.08] transition-colors shrink-0">
           {item.isBrandIcon ? (
-            <IconComp size={15} color="#fff" />
+            <IconComp size={16} color="#fff" />
           ) : (
-            <IconComp className="w-4 h-4 text-white/50 group-hover:text-[#D7FF00] transition-colors" size={15} />
+            <IconComp className="w-4 h-4 text-white/50 group-hover:text-[#D7FF00] transition-colors" size={16} />
           )}
         </div>
       )}
@@ -308,8 +257,8 @@ function MegaMenuPanel({ data }: { data: MegaMenuData }) {
   return (
     <div className="flex gap-0">
       {data.columns.map((col, i) => (
-        <div key={col.heading} className={`flex-1 min-w-0 ${i > 0 ? 'border-l border-white/[0.06] pl-5' : 'pr-5'}`}>
-          <h3 className="text-[10px] font-semibold tracking-[0.15em] text-white/25 uppercase mb-2 px-2.5 font-[family-name:var(--font-space-grotesk)]">
+        <div key={col.heading} className={`flex-1 min-w-0 ${i > 0 ? 'border-l border-white/[0.06] pl-6' : 'pr-6'}`}>
+          <h3 className="text-[10px] font-semibold tracking-[0.15em] text-white/25 uppercase mb-3 px-3 font-[family-name:var(--font-space-grotesk)]">
             {col.heading}
           </h3>
           <div className="space-y-0.5">
@@ -330,7 +279,7 @@ function MobileAccordion({ label, data, isOpen, onToggle, badge, badgeText }: {
 }) {
   return (
     <div>
-      <button onClick={onToggle} className="flex items-center justify-between w-full py-3 text-sm font-medium text-white/80 hover:text-[#D7FF00] transition-colors">
+      <button onClick={onToggle} className="flex items-center justify-between w-full py-3.5 text-sm font-medium text-white/80 hover:text-[#D7FF00] transition-colors">
         <span className="flex items-center gap-2">
           {label}
           {badge && <NavBadge type={badge} text={badgeText} />}
@@ -346,7 +295,7 @@ function MobileAccordion({ label, data, isOpen, onToggle, badge, badgeText }: {
               <div key={col.heading} className="mb-3">
                 <h4 className="text-[9px] font-semibold tracking-[0.15em] text-white/25 uppercase mb-1.5 px-3">{col.heading}</h4>
                 {col.items.map((item) => (
-                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 cursor-pointer">
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-white/5 cursor-pointer">
                     {item.icon && (item.isBrandIcon ? <item.icon size={14} color="#fff" /> : <item.icon className="w-4 h-4 text-white/40" size={14} />)}
                     <span className="text-sm text-white/70">{item.label}</span>
                     {item.badge && <NavBadge type={item.badge} />}
@@ -376,7 +325,7 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    const onResize = () => { if (window.innerWidth >= 1024) setMobileOpen(false); };
+    const onResize = () => { if (window.innerWidth >= 1280) setMobileOpen(false); };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
@@ -393,22 +342,22 @@ export default function Header() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled ? 'bg-[rgba(0,0,0,0.92)] backdrop-blur-2xl border-b border-white/[0.06]' : 'bg-transparent'
         }`}
-        style={{ height: 56 }}
+        style={{ height: 64 }}
       >
-        <div className="flex items-center h-full max-w-[1440px] mx-auto px-4 lg:px-8">
+        <div className="flex items-center h-full max-w-[1440px] mx-auto px-5 lg:px-8">
           {/* Logo */}
-          <a href="/" className="flex items-center shrink-0 mr-6">
-            <Image src="/images/logo-icon.png" alt="AI Creative Studio" width={32} height={32} className="object-contain" priority />
+          <a href="/" className="flex items-center shrink-0 mr-8">
+            <Image src="/images/logo-icon.png" alt="AI Creative Studio" width={34} height={34} className="object-contain" priority />
           </a>
 
           {/* Desktop Left Nav */}
-          <nav className="hidden lg:flex items-center gap-0.5 flex-1 min-w-0" onMouseLeave={() => setActiveMenu(null)}>
+          <nav className="hidden xl:flex items-center gap-1 flex-1 min-w-0" onMouseLeave={() => setActiveMenu(null)}>
             {LEFT_NAV.map((item) => (
               <div key={item.label} className="relative flex items-center">
-                {item.separator && <div className="w-px h-3.5 bg-white/[0.08] mx-2" />}
+                {item.separator && <div className="w-px h-4 bg-white/[0.08] mx-3" />}
                 <button
-                  className={`flex items-center gap-1.5 px-2 py-1.5 text-[13px] text-white/70 hover:text-white transition-colors rounded-md whitespace-nowrap ${
-                    activeMenu === item.label ? 'text-white' : ''
+                  className={`flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors rounded-lg whitespace-nowrap ${
+                    activeMenu === item.label ? 'text-white bg-white/[0.04]' : ''
                   }`}
                   onMouseEnter={() => setActiveMenu(item.hasMegaMenu ? item.label : null)}
                 >
@@ -423,13 +372,13 @@ export default function Header() {
                 <AnimatePresence>
                   {item.hasMegaMenu && activeMenu === item.label && MEGA_MENU_MAP[item.label] && (
                     <motion.div
-                      initial={{ opacity: 0, y: -2 }}
+                      initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -2 }}
-                      transition={{ duration: 0.12, ease: 'easeOut' }}
-                      className="absolute top-full left-0 pt-2 z-50"
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15, ease: 'easeOut' }}
+                      className="absolute top-full left-0 pt-3 z-50"
                     >
-                      <div className="bg-[rgba(8,8,8,0.98)] backdrop-blur-3xl rounded-xl border border-white/[0.06] shadow-2xl shadow-black/60 p-5 w-[680px] max-h-[55vh] overflow-y-auto mega-menu-scroll">
+                      <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-3xl rounded-2xl border border-white/[0.06] shadow-2xl shadow-black/60 p-6 w-[720px] max-h-[55vh] overflow-y-auto mega-menu-scroll">
                         <MegaMenuPanel data={MEGA_MENU_MAP[item.label]} />
                       </div>
                     </motion.div>
@@ -440,24 +389,24 @@ export default function Header() {
           </nav>
 
           {/* Desktop Right: Pricing + Actions */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
-            <button className="flex items-center gap-1.5 px-2 py-1.5 text-[13px] text-white/70 hover:text-white transition-colors rounded-md whitespace-nowrap">
+          <div className="hidden xl:flex items-center gap-3 shrink-0 ml-4">
+            <button className="flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors rounded-lg whitespace-nowrap">
               Pricing
               <NavBadge type="OFF" text="30% OFF" />
             </button>
-            <div className="w-px h-3.5 bg-white/[0.08] mx-1" />
-            <button className="text-[13px] text-white/60 hover:text-white transition-colors px-2 py-1.5">
+            <div className="w-px h-4 bg-white/[0.08]" />
+            <button className="text-[13px] font-medium text-white/50 hover:text-white transition-colors px-3 py-2">
               Login
             </button>
-            <button className="bg-[#D7FF00] text-black text-[13px] font-semibold px-4 py-1.5 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap ml-1">
+            <button className="bg-[#D7FF00] text-black text-[13px] font-semibold px-5 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
               Sign Up
             </button>
           </div>
 
-          {/* Mobile Actions */}
-          <div className="flex items-center gap-2 lg:hidden ml-auto">
-            <button className="bg-[#D7FF00] text-black text-[13px] font-semibold px-3.5 py-1.5 rounded-lg">Sign Up</button>
-            <button className="text-white p-1.5 hover:bg-white/5 rounded-md" onClick={() => setMobileOpen(true)} aria-label="Menu">
+          {/* Mobile/Tablet Actions */}
+          <div className="flex items-center gap-3 xl:hidden ml-auto">
+            <button className="bg-[#D7FF00] text-black text-[13px] font-semibold px-4 py-2 rounded-lg">Sign Up</button>
+            <button className="text-white p-2 hover:bg-white/5 rounded-lg" onClick={() => setMobileOpen(true)} aria-label="Menu">
               <Menu className="w-5 h-5" />
             </button>
           </div>
@@ -469,7 +418,7 @@ export default function Header() {
         {activeMenu && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }}
-            className="fixed inset-0 top-14 z-30 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 top-16 z-30 bg-black/50 backdrop-blur-sm"
             onMouseEnter={() => setActiveMenu(null)}
           />
         )}
@@ -477,13 +426,14 @@ export default function Header() {
 
       {/* Mobile Sheet */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="bg-[#0A0A0A] border-white/[0.06] text-white w-[300px] sm:w-[340px] p-0">
-          <SheetHeader className="p-4 border-b border-white/[0.06]">
+        <SheetContent side="left" className="bg-[#0A0A0A] border-white/[0.06] text-white w-[320px] sm:w-[360px] p-0">
+          <SheetHeader className="p-5 border-b border-white/[0.06]">
             <SheetTitle className="flex items-center gap-2.5 text-white">
-              <Image src="/images/logo-icon.png" alt="AI Creative Studio" width={24} height={24} className="object-contain" />
+              <Image src="/images/logo-icon.png" alt="AI Creative Studio" width={26} height={26} className="object-contain" />
+              <span className="text-sm font-[family-name:var(--font-space-grotesk)]">AI Creative Studio</span>
             </SheetTitle>
           </SheetHeader>
-          <div className="flex-1 overflow-y-auto mega-menu-scroll p-4 space-y-0.5">
+          <div className="flex-1 overflow-y-auto mega-menu-scroll p-5 space-y-0.5">
             {allNavItems.map((item) =>
               item.hasMegaMenu && MEGA_MENU_MAP[item.label] ? (
                 <MobileAccordion
@@ -492,16 +442,16 @@ export default function Header() {
                   badge={item.badge} badgeText={item.badgeText}
                 />
               ) : (
-                <div key={item.label} className="flex items-center justify-between py-3">
+                <div key={item.label} className="flex items-center justify-between py-3.5">
                   <span className="text-sm font-medium text-white/80">{item.label}</span>
                   {item.badge && <NavBadge type={item.badge} text={item.badgeText} />}
                 </div>
               )
             )}
           </div>
-          <div className="border-t border-white/[0.06] p-4 space-y-2.5">
-            <button className="w-full text-sm text-white/70 py-2.5 text-left hover:text-white">Login</button>
-            <button className="w-full bg-[#D7FF00] text-black text-sm font-semibold py-2.5 rounded-lg">Sign Up</button>
+          <div className="border-t border-white/[0.06] p-5 space-y-3">
+            <button className="w-full text-sm text-white/70 py-3 text-left hover:text-white">Login</button>
+            <button className="w-full bg-[#D7FF00] text-black text-sm font-semibold py-3 rounded-lg">Sign Up</button>
           </div>
         </SheetContent>
       </Sheet>

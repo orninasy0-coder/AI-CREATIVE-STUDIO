@@ -15,31 +15,31 @@ export default function CanvasBanner() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
   return (
-    <section ref={ref} className="w-full bg-[#000] py-16 md:py-20">
-      <div className="px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
-        <motion.div className="flex items-end justify-between mb-8" initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
+    <section ref={ref} className="w-full bg-[#000] py-20 md:py-28">
+      <div className="px-5 sm:px-6 lg:px-8 max-w-[1440px] mx-auto">
+        <motion.div className="flex items-end justify-between mb-10 md:mb-12" initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
           <h2 className="font-[family-name:var(--font-space-grotesk)] text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight uppercase">
             ONE CANVAS<span className="text-[#D7FF00]">.</span> EVERY WORKFLOW<span className="text-[#D7FF00]">.</span>
           </h2>
-          <button className="bg-white text-black font-semibold px-5 py-2 rounded-lg text-sm font-[family-name:var(--font-space-grotesk)] flex items-center gap-2 hover:bg-[#D7FF00] transition-colors whitespace-nowrap shrink-0 ml-4">
+          <button className="bg-white text-black font-semibold px-6 py-2.5 rounded-xl text-sm font-[family-name:var(--font-space-grotesk)] flex items-center gap-2 hover:bg-[#D7FF00] transition-colors whitespace-nowrap shrink-0 ml-4">
             <Plus className="w-4 h-4" /> Try Canvas
           </button>
         </motion.div>
-        <motion.div className="relative w-full rounded-2xl overflow-hidden mb-5" initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay: 0.1 }}>
+        <motion.div className="relative w-full rounded-2xl overflow-hidden mb-6" initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay: 0.1 }}>
           <Image src="/images/canvas-banner.png" alt="Canvas workspace" width={1400} height={700} className="w-full h-auto object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {previewCards.map((card, i) => (
             <motion.div key={card.title} className="group bg-[#111] border border-white/[0.04] rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:border-[#D7FF00]/20"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.35, delay: 0.2 + i * 0.08 }}>
-              <div className="relative h-28 sm:h-32 overflow-hidden">
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}>
+              <div className="relative h-32 sm:h-36 overflow-hidden">
                 <Image src={card.image} alt={card.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="33vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
               </div>
-              <div className="p-3 flex items-center justify-between">
-                <span className="text-white/80 text-xs font-medium font-[family-name:var(--font-space-grotesk)]">{card.title}</span>
-                <span className="text-[#D7FF00] text-[10px] font-semibold hover:underline">Try now →</span>
+              <div className="p-4 flex items-center justify-between">
+                <span className="text-white/80 text-sm font-medium font-[family-name:var(--font-space-grotesk)]">{card.title}</span>
+                <span className="text-[#D7FF00] text-xs font-semibold hover:underline">Try now →</span>
               </div>
             </motion.div>
           ))}
