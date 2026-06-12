@@ -223,6 +223,8 @@ interface NavItem {
   label: string;
   hasMegaMenu?: boolean;
   badge?: BadgeType;
+  badgeText?: string; // Custom badge text override
+  separator?: boolean; // Show vertical divider before this item
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -230,21 +232,21 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Image', hasMegaMenu: true },
   { label: 'Video', hasMegaMenu: true },
   { label: 'Audio', hasMegaMenu: true },
-  { label: 'Supercomputer', badge: 'NEW' },
+  { label: 'Supercomputer', badge: 'NEW', separator: true },
   { label: 'MCP & CLI', badge: 'NEW' },
   { label: 'Colab' },
   { label: 'Plugins', badge: 'NEW' },
-  { label: 'Marketing Studio' },
+  { label: 'Marketing Studio', separator: true },
   { label: 'Cinema Studio' },
   { label: 'AI Influencer' },
-  { label: 'Canvas' },
+  { label: 'Canvas', separator: true },
   { label: 'Apps' },
-  { label: 'Pricing', badge: 'OFF' },
+  { label: 'Pricing', badge: 'OFF', badgeText: '30% OFF', separator: true },
 ];
 
 // ─── Badge Component ────────────────────────────────────────────────────────
 
-function Badge({ type }: { type: BadgeType }) {
+function Badge({ type, text }: { type: BadgeType; text?: string }) {
   if (!type) return null;
   const classes =
     type === 'TOP'
@@ -257,7 +259,7 @@ function Badge({ type }: { type: BadgeType }) {
     <span
       className={`${classes} text-[9px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}
     >
-      {type}
+      {text || type}
     </span>
   );
 }
@@ -434,11 +436,14 @@ export default function Header() {
           {/* Desktop Navigation + Mega Menu Hover Zone */}
           <div
             ref={hoverZoneRef}
-            className="hidden lg:flex items-center gap-0.5 flex-1 justify-center"
+            className="hidden lg:flex items-center gap-0.5 flex-1 justify-start ml-4"
             onMouseLeave={() => setActiveMenu(null)}
           >
             {NAV_ITEMS.map((item) => (
-              <div key={item.label} className="relative">
+              <div key={item.label} className="relative flex items-center">
+                {item.separator && (
+                  <div className="w-px h-4 bg-white/10 mx-1.5" />
+                )}
                 <button
                   className={`flex items-center gap-1 px-2.5 py-1.5 text-sm text-white hover:text-[#D7FF00] transition-colors rounded-md whitespace-nowrap ${
                     activeMenu === item.label ? 'text-[#D7FF00]' : ''
@@ -459,7 +464,7 @@ export default function Header() {
                       }`}
                     />
                   )}
-                  {item.badge && <Badge type={item.badge} />}
+                  {item.badge && <Badge type={item.badge} text={item.badgeText} />}
                 </button>
 
                 {/* Mega Menu Dropdown - inside each nav item */}
@@ -589,7 +594,7 @@ export default function Header() {
                   <span className="text-sm font-medium text-white hover:text-[#D7FF00] transition-colors cursor-pointer">
                     {item.label}
                   </span>
-                  {item.badge && <Badge type={item.badge} />}
+                  {item.badge && <Badge type={item.badge} text={item.badgeText} />}
                 </div>
               )
             )}
