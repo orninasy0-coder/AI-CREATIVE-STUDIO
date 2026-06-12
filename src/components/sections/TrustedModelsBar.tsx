@@ -50,18 +50,7 @@ function ModelChip({ model }: { model: ModelItem }) {
 
 export default function TrustedModelsBar() {
   return (
-    <section className="w-full bg-[#000] py-8 md:py-10 overflow-hidden -mt-6 relative z-10">
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-8 mb-5">
-        <motion.p
-          className="text-center text-white/20 text-[11px] font-[family-name:var(--font-space-grotesk)] tracking-[0.2em] uppercase font-medium"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Trusted by creators using the world&apos;s leading AI models
-        </motion.p>
-      </div>
+    <section className="w-full bg-[#000] py-6 md:py-8 overflow-hidden relative z-10">
       <motion.div
         className="max-w-[1440px] mx-auto"
         initial={{ opacity: 0 }}

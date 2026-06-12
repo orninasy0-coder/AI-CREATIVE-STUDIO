@@ -29,7 +29,7 @@ export default function FooterSection() {
     <footer ref={ref} className="w-full bg-[#050505] border-t border-white/[0.04] py-14 mt-auto">
       <div className="px-5 sm:px-6 lg:px-8 max-w-[1440px] mx-auto">
         <motion.div className="mb-12" initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
-          <Image src="/images/logo.png" alt="AI Creative Studio" width={140} height={36} className="h-8 w-auto" />
+          <Image src="/images/logo.png" alt="AI Creative Studio" width={180} height={46} className="h-11 w-auto" />
           <p className="text-white/20 text-xs mt-4 max-w-sm font-[family-name:var(--font-inter)] leading-relaxed">
             The all-in-one AI creative platform. Create stunning images, videos, and audio with the world&apos;s leading AI models.
           </p>

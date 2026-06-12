@@ -2,12 +2,13 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ArrowRight, Cpu, Monitor, Star, Atom, LayoutGrid } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight, Cpu, Monitor, Star, Atom, LayoutGrid, Sparkles } from 'lucide-react';
 import {
   OpenAIIcon, FluxIcon, ByteDanceIcon, RecraftIcon, KlingIcon, GrokIcon, DeepMindIcon,
 } from '@/components/icons/BrandIcons';
 
-type BadgeType = 'NEW' | 'TRENDING' | null;
+type BadgeType = 'NEW' | 'TRENDING' | 'TOP' | null;
 type CategoryType = 'Image' | 'Video' | null;
 
 interface FeatureCard {
@@ -18,6 +19,8 @@ interface FeatureCard {
   Icon?: React.ComponentType<{ size?: number | string; color?: string; className?: string; style?: React.CSSProperties }>;
   LucideIcon?: React.ComponentType<{ size?: number | string; className?: string }>;
   isSpecial?: boolean;
+  isImageCard?: boolean;
+  image?: string;
 }
 
 const features: FeatureCard[] = [
@@ -37,9 +40,36 @@ const features: FeatureCard[] = [
   { title: 'Cinema Studio', description: 'Cinematic scenes effortlessly', LucideIcon: LayoutGrid },
 ];
 
+const imageCards: FeatureCard[] = [
+  {
+    title: 'CANVAS',
+    description: 'Design, edit, and compose with AI-powered canvas tools',
+    badge: 'NEW',
+    LucideIcon: Atom,
+    isImageCard: true,
+    image: '/images/canvas-banner.png',
+  },
+  {
+    title: 'GPT IMAGE 2',
+    description: 'Near-perfect text rendering & photorealistic generation',
+    badge: 'TOP',
+    Icon: OpenAIIcon,
+    isImageCard: true,
+    image: '/images/ai-image-1.png',
+  },
+  {
+    title: 'SEEDANCE 2.0',
+    description: 'Most advanced AI video — high quality in seconds',
+    badge: 'TRENDING',
+    Icon: ByteDanceIcon,
+    isImageCard: true,
+    image: '/images/seedance-1.png',
+  },
+];
+
 function Badge({ type }: { type: BadgeType }) {
   if (!type) return null;
-  const cls = type === 'NEW' ? 'bg-[#D7FF00] text-black' : 'bg-[#FF3366] text-white';
+  const cls = type === 'NEW' ? 'bg-[#D7FF00] text-black' : type === 'TOP' ? 'bg-[#FF3366] text-white' : 'bg-[#FF3366] text-white';
   return <span className={`${cls} text-[9px] font-bold px-2 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}>{type}</span>;
 }
 
@@ -90,6 +120,47 @@ function FeatureCardComponent({ card, index }: { card: FeatureCard; index: numbe
   );
 }
 
+function ImageCardComponent({ card, index }: { card: FeatureCard; index: number }) {
+  return (
+    <motion.div
+      className="group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 border border-white/[0.04] hover:border-[#D7FF00]/20"
+      initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-20px' }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.25, 0.4, 0.25, 1] }}
+      whileHover={{ y: -4, scale: 1.01 }}
+    >
+      {/* Image background */}
+      <div className="relative w-full aspect-[16/10] overflow-hidden">
+        {card.image ? (
+          <Image src={card.image} alt={card.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-[#1a1a2e] to-[#0a0a0a]" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+      </div>
+      {/* Content overlay */}
+      <div className="absolute bottom-0 left-0 right-0 p-5">
+        <div className="flex items-center gap-2 mb-2">
+          {card.Icon ? (
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-white/[0.08] backdrop-blur-sm">
+              <card.Icon size={14} color="#D7FF00" />
+            </div>
+          ) : card.LucideIcon ? (
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-white/[0.08] backdrop-blur-sm">
+              <card.LucideIcon className="w-4 h-4 text-[#D7FF00]" size={14} />
+            </div>
+          ) : null}
+          {card.badge && <Badge type={card.badge} />}
+        </div>
+        <h3 className="text-white font-bold text-base font-[family-name:var(--font-space-grotesk)] tracking-tight">{card.title}</h3>
+        <p className="text-white/40 text-xs mt-1 font-[family-name:var(--font-inter)] leading-relaxed">{card.description}</p>
+        <button className="mt-3 flex items-center gap-1.5 text-[#D7FF00] text-xs font-semibold font-[family-name:var(--font-space-grotesk)] hover:gap-2.5 transition-all">
+          Try now <ArrowRight className="w-3 h-3" />
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function AIModelsHub() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
@@ -108,6 +179,19 @@ export default function AIModelsHub() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((card, i) => card.isSpecial ? <SpecialCard key={card.title} card={card} index={i} /> : <FeatureCardComponent key={card.title} card={card} index={i} />)}
         </div>
+
+        {/* Featured Image Cards */}
+        <motion.div
+          className="mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
+            {imageCards.map((card, i) => <ImageCardComponent key={card.title} card={card} index={i} />)}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

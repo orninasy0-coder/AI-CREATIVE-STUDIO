@@ -4,8 +4,7 @@ import Header from '@/components/header/Header';
 import HeroSection from '@/components/sections/HeroSection';
 import TrustedModelsBar from '@/components/sections/TrustedModelsBar';
 import AIModelsHub from '@/components/sections/AIModelsHub';
-import CreativeCategories from '@/components/sections/CreativeCategories';
-import TrendingPresets from '@/components/sections/TrendingPresets';
+import ViralPresets from '@/components/sections/ViralPresets';
 import GPTImageGallery from '@/components/sections/GPTImageGallery';
 import CanvasBanner from '@/components/sections/CanvasBanner';
 import MarketingStudio from '@/components/sections/MarketingStudio';
@@ -26,8 +25,7 @@ export default function Home() {
         <HeroSection />
         <TrustedModelsBar />
         <AIModelsHub />
-        <CreativeCategories />
-        <TrendingPresets />
+        <ViralPresets />
         <GPTImageGallery />
         <CanvasBanner />
         <MarketingStudio />

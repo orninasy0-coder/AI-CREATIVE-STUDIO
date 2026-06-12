@@ -187,10 +187,10 @@ const LEFT_NAV: NavItem[] = [
   { label: 'Audio', hasMegaMenu: true },
   { label: 'Supercomputer', badge: 'NEW', separator: true, showGridIcon: true },
   { label: 'MCP & CLI', badge: 'NEW' },
-  { label: 'Plugins', badge: 'SOON', badgeText: 'SOON', hasMegaMenu: true, separator: true },
+  { label: 'Plugins', badge: 'SOON', badgeText: 'SOON', hasMegaMenu: true },
   { label: 'Marketing Studio', separator: true },
   { label: 'Cinema Studio' },
-  { label: 'Canvas', separator: true },
+  { label: 'Canvas' },
 ];
 
 // ─── Badge ──────────────────────────────────────────────────────────────────
@@ -351,12 +351,12 @@ export default function Header() {
           </a>
 
           {/* Desktop Left Nav */}
-          <nav className="hidden xl:flex items-center gap-1 flex-1 min-w-0" onMouseLeave={() => setActiveMenu(null)}>
+          <nav className="hidden xl:flex items-center gap-0.5 flex-1 min-w-0" onMouseLeave={() => setActiveMenu(null)}>
             {LEFT_NAV.map((item) => (
               <div key={item.label} className="relative flex items-center">
-                {item.separator && <div className="w-px h-4 bg-white/[0.08] mx-3" />}
+                {item.separator && <div className="w-px h-4 bg-white/[0.08] mx-2" />}
                 <button
-                  className={`flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors rounded-lg whitespace-nowrap ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium text-white/60 hover:text-white transition-colors rounded-md whitespace-nowrap ${
                     activeMenu === item.label ? 'text-white bg-white/[0.04]' : ''
                   }`}
                   onMouseEnter={() => setActiveMenu(item.hasMegaMenu ? item.label : null)}
