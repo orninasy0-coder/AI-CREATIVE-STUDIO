@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, type ComponentType } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -31,23 +31,44 @@ import {
   Languages,
   Menu,
   ChevronDown,
-  Terminal,
-  Puzzle,
-  Globe,
-  Cpu,
-  Hexagon,
-  Zap,
-  Diamond,
-  Star,
-  Circle,
   Volume2,
   Music,
   Headphones,
   Speaker,
-  Radio,
   AudioLines,
   type LucideIcon,
 } from 'lucide-react';
+import {
+  OpenAI,
+  Flux,
+  Midjourney,
+  Google,
+  Kling,
+  DeepMind,
+  Runway,
+  ByteDance,
+  Hunyuan,
+  Recraft,
+  Grok,
+  Sora,
+  ElevenLabs,
+  Minimax,
+  Hailuo,
+  Luma,
+  Pika,
+  Stability,
+  Ideogram,
+  Suno,
+  Udio,
+  Civitai,
+  HuggingFace,
+  ComfyUI,
+  Replicate,
+  Doubao,
+  CogVideo,
+  Vidu,
+  PixVerse,
+} from '@lobehub/icons';
 import {
   Sheet,
   SheetContent,
@@ -59,11 +80,15 @@ import {
 
 type BadgeType = 'TOP' | 'NEW' | 'OFF' | null;
 
+// Icon can be either a Lucide icon or a lobehub icon
+type IconComponent = LucideIcon | ComponentType<{ size?: number | string; color?: string }>;
+
 interface MegaMenuItem {
   label: string;
-  icon?: LucideIcon;
+  icon?: IconComponent;
   description?: string;
   badge?: BadgeType;
+  isBrandIcon?: boolean; // true = lobehub brand icon (renders differently)
 }
 
 interface MegaMenuColumn {
@@ -100,21 +125,20 @@ const IMAGE_MEGA_MENU: MegaMenuData = {
     {
       heading: 'MODELS',
       items: [
-        { label: 'GPT Image 2', icon: Hexagon, description: '4K images with near-perfect text rendering', badge: 'NEW' },
-        { label: 'GPT Image 1.5', icon: Hexagon, description: 'True-color precision rendering' },
-        { label: 'Flux', icon: Zap, description: 'State-of-the-art image generation', badge: 'TOP' },
-        { label: 'Reve', icon: Diamond, description: 'Advanced image editing model' },
-        { label: 'Seedream Lite', icon: Star, description: 'Intelligent visual reasoning' },
-        { label: 'Seedream', icon: Star, description: 'Professional image generation' },
-        { label: 'Nano Banana', icon: Circle, description: 'Pro quality at flash speed', badge: 'NEW' },
-        { label: 'Nano Banana Pro', icon: Circle, description: 'Best 4K image model ever', badge: 'TOP' },
-        { label: 'Topaz', icon: Diamond, description: 'High-resolution upscaler' },
-        { label: 'Recraft', icon: Paintbrush, description: 'Photorealistic and expressive generation', badge: 'NEW' },
-        { label: 'Z-Image', icon: Star, description: 'Instant lifelike portraits' },
-        { label: 'Grok Imagine', icon: Cpu, description: 'Versatile image styles by xAI' },
-        { label: 'Soul Cinema', icon: Film, description: 'Cinematic stills from your imagination' },
-        { label: 'Soul 2.0', icon: Sparkles, description: 'Next gen soul model' },
-        { label: 'Popcorn', icon: Play, description: 'Storyboard, edit, create' },
+        { label: 'GPT Image 2', icon: OpenAI, description: '4K images with near-perfect text rendering', badge: 'NEW', isBrandIcon: true },
+        { label: 'GPT Image 1.5', icon: OpenAI, description: 'True-color precision rendering', isBrandIcon: true },
+        { label: 'Flux', icon: Flux, description: 'State-of-the-art image generation', badge: 'TOP', isBrandIcon: true },
+        { label: 'Reve', icon: Sparkles, description: 'Advanced image editing model' },
+        { label: 'Seedream Lite', icon: Doubao, description: 'Intelligent visual reasoning', isBrandIcon: true },
+        { label: 'Seedream', icon: Doubao, description: 'Professional image generation', isBrandIcon: true },
+        { label: 'Midjourney', icon: Midjourney, description: 'Creative AI image generation', badge: 'TOP', isBrandIcon: true },
+        { label: 'Ideogram', icon: Ideogram, description: 'Text-in-image generation', badge: 'NEW', isBrandIcon: true },
+        { label: 'Recraft', icon: Recraft, description: 'Photorealistic and expressive generation', badge: 'NEW', isBrandIcon: true },
+        { label: 'Stability AI', icon: Stability, description: 'Stable Diffusion models', isBrandIcon: true },
+        { label: 'Grok Imagine', icon: Grok, description: 'Versatile image styles by xAI', isBrandIcon: true },
+        { label: 'Sora', icon: Sora, description: 'Cinematic stills from your imagination', isBrandIcon: true },
+        { label: 'Civitai', icon: Civitai, description: 'Community models & checkpoints', isBrandIcon: true },
+        { label: 'ComfyUI', icon: ComfyUI, description: 'Node-based image workflows', isBrandIcon: true },
       ],
     },
   ],
@@ -144,19 +168,20 @@ const VIDEO_MEGA_MENU: MegaMenuData = {
     {
       heading: 'MODELS',
       items: [
-        { label: 'Seedance 2.0', icon: Star, description: 'Most advanced AI video model', badge: 'TOP' },
-        { label: 'Kling 3.0', icon: Film, description: 'Cinematic videos with audio', badge: 'TOP' },
-        { label: 'Kling Motion Control', icon: Film, description: 'Transfer motion from video to image' },
-        { label: 'Kling Edit', icon: Scissors, description: 'Advanced video editing' },
-        { label: 'Sora 2', icon: Hexagon, description: "OpenAI's most advanced video model", badge: 'TOP' },
-        { label: 'Google Veo 3.1 Lite', icon: Cpu, description: 'Fast video generation by Google', badge: 'NEW' },
-        { label: 'Google Veo 3.1', icon: Cpu, description: 'Advanced AI video with sound', badge: 'TOP' },
-        { label: 'HappyHorse', icon: Zap, description: "Alibaba's #1 ranked video and audio model" },
-        { label: 'Grok Imagine Video', icon: Cpu, description: 'Cinematic videos with synchronized audio', badge: 'NEW' },
-        { label: 'Wan 2.7', icon: Globe, description: 'AI video with first and last frame control', badge: 'NEW' },
-        { label: 'Minimax Hailuo', icon: Diamond, description: 'Fastest high-dynamic video' },
-        { label: 'Seedance Pro', icon: Star, description: 'Pro-grade audio-visual sync' },
-        { label: 'AI DOP', icon: Camera, description: 'VFX and camera control' },
+        { label: 'Seedance 2.0', icon: ByteDance, description: 'Most advanced AI video model', badge: 'TOP', isBrandIcon: true },
+        { label: 'Kling 3.0', icon: Kling, description: 'Cinematic videos with audio', badge: 'TOP', isBrandIcon: true },
+        { label: 'Kling Motion', icon: Kling, description: 'Transfer motion from video to image', isBrandIcon: true },
+        { label: 'Kling Edit', icon: Kling, description: 'Advanced video editing', isBrandIcon: true },
+        { label: 'Sora 2', icon: Sora, description: "OpenAI's most advanced video model", badge: 'TOP', isBrandIcon: true },
+        { label: 'Google Veo 3.1 Lite', icon: DeepMind, description: 'Fast video generation by Google', badge: 'NEW', isBrandIcon: true },
+        { label: 'Google Veo 3.1', icon: DeepMind, description: 'Advanced AI video with sound', badge: 'TOP', isBrandIcon: true },
+        { label: 'Runway Gen-3', icon: Runway, description: 'Hollywood-grade AI video', isBrandIcon: true },
+        { label: 'Grok Video', icon: Grok, description: 'Cinematic videos with synchronized audio', badge: 'NEW', isBrandIcon: true },
+        { label: 'Hunyuan Video', icon: Hunyuan, description: 'AI video generation by Tencent', badge: 'NEW', isBrandIcon: true },
+        { label: 'Minimax Hailuo', icon: Hailuo, description: 'Fastest high-dynamic video', isBrandIcon: true },
+        { label: 'Seedance Pro', icon: ByteDance, description: 'Pro-grade audio-visual sync', isBrandIcon: true },
+        { label: 'Luma Dream Machine', icon: Luma, description: 'VFX and camera control', isBrandIcon: true },
+        { label: 'CogVideoX', icon: CogVideo, description: 'Text-to-video generation', isBrandIcon: true },
       ],
     },
   ],
@@ -178,12 +203,12 @@ const AUDIO_MEGA_MENU: MegaMenuData = {
     {
       heading: 'MODELS',
       items: [
-        { label: 'Eleven v3', icon: Mic, description: 'Expressive AI voice with emotion control', badge: 'TOP' },
-        { label: 'MiniMax Speech 2.8', icon: Volume2, description: 'Studio-quality text-to-speech', badge: 'TOP' },
-        { label: 'Seed Speech', icon: Languages, description: 'ByteDance multilingual text-to-speech', badge: 'NEW' },
+        { label: 'Eleven v3', icon: ElevenLabs, description: 'Expressive AI voice with emotion control', badge: 'TOP', isBrandIcon: true },
+        { label: 'MiniMax Speech 2.8', icon: Minimax, description: 'Studio-quality text-to-speech', badge: 'TOP', isBrandIcon: true },
+        { label: 'Seed Speech', icon: ByteDance, description: 'ByteDance multilingual text-to-speech', badge: 'NEW', isBrandIcon: true },
         { label: 'VibeVoice', icon: Sparkles, description: 'Long-form expressive voice synthesis', badge: 'NEW' },
-        { label: 'AudioCraft', icon: Speaker, description: 'High-fidelity audio generation' },
-        { label: 'SonicPro', icon: AudioLines, description: 'Professional audio mastering' },
+        { label: 'Suno', icon: Suno, description: 'AI music and song generation', isBrandIcon: true },
+        { label: 'Udio', icon: Udio, description: 'Professional audio mastering', isBrandIcon: true },
       ],
     },
   ],
@@ -246,7 +271,11 @@ function MegaMenuItemRow({ item }: { item: MegaMenuItem }) {
     <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
       {IconComp && (
         <div className="flex items-center justify-center w-7 h-7 rounded-md bg-white/5 group-hover:bg-white/10 transition-colors shrink-0">
-          <IconComp className="w-3.5 h-3.5 text-white/70 group-hover:text-[#D7FF00] transition-colors" />
+          {item.isBrandIcon ? (
+            <IconComp size={14} color="#fff" />
+          ) : (
+            <IconComp className="w-3.5 h-3.5 text-white/70 group-hover:text-[#D7FF00] transition-colors" size={14} />
+          )}
         </div>
       )}
       <div className="flex-1 min-w-0">
@@ -328,7 +357,11 @@ function MobileMegaMenuSection({ label, data, isOpen, onToggle }: { label: strin
                       className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
                     >
                       {item.icon && (
-                        <item.icon className="w-4 h-4 text-white/50 shrink-0" />
+                        item.isBrandIcon ? (
+                          <item.icon size={14} color="#fff" />
+                        ) : (
+                          <item.icon className="w-4 h-4 text-white/50 shrink-0" size={14} />
+                        )
                       )}
                       <span className="text-sm text-white/80">{item.label}</span>
                       {item.badge && <Badge type={item.badge} />}

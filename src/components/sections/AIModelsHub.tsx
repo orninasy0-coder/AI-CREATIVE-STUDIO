@@ -3,25 +3,41 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import {
+  OpenAI,
+  Flux,
+  Midjourney,
+  Google,
+  Kling,
+  DeepMind,
+  Runway,
+  ByteDance,
+  Hunyuan,
+  type LucideIcon,
+} from '@lobehub/icons';
+
+// ─── Model Data ──────────────────────────────────────────────────────────────
 
 interface AIModel {
   name: string;
   provider: string;
-  iconColor: string;
+  Icon: LucideIcon | React.ComponentType<{ size?: number; color?: string }>;
 }
 
 const models: AIModel[] = [
-  { name: 'GPT Image', provider: 'OpenAI', iconColor: '#10A37F' },
-  { name: 'Flux', provider: 'Black Forest Labs', iconColor: '#6366F1' },
-  { name: 'Midjourney', provider: 'Midjourney', iconColor: '#FFFFFF' },
-  { name: 'Imagen', provider: 'Google', iconColor: '#4285F4' },
-  { name: 'Kling', provider: 'Kuaishou', iconColor: '#FF6B35' },
-  { name: 'Veo', provider: 'Google', iconColor: '#34A853' },
-  { name: 'Runway', provider: 'Runway', iconColor: '#FF3366' },
-  { name: 'Seedance', provider: 'ByteDance', iconColor: '#D7FF00' },
-  { name: 'Wan', provider: 'Alibaba', iconColor: '#FF6B00' },
-  { name: 'Hunyuan', provider: 'Tencent', iconColor: '#00B4D8' },
+  { name: 'GPT Image', provider: 'OpenAI', Icon: OpenAI },
+  { name: 'Flux', provider: 'Black Forest Labs', Icon: Flux },
+  { name: 'Midjourney', provider: 'Midjourney', Icon: Midjourney },
+  { name: 'Imagen', provider: 'Google', Icon: Google },
+  { name: 'Kling', provider: 'Kuaishou', Icon: Kling },
+  { name: 'Veo', provider: 'Google DeepMind', Icon: DeepMind },
+  { name: 'Runway', provider: 'Runway', Icon: Runway },
+  { name: 'Seedance', provider: 'ByteDance', Icon: ByteDance },
+  { name: 'Wan', provider: 'Alibaba', Icon: Hunyuan },
+  { name: 'Hunyuan', provider: 'Tencent', Icon: Hunyuan },
 ];
+
+// ─── Model Card ──────────────────────────────────────────────────────────────
 
 function ModelCard({ model, index }: { model: AIModel; index: number }) {
   return (
@@ -37,20 +53,9 @@ function ModelCard({ model, index }: { model: AIModel; index: number }) {
       }}
       whileHover={{ scale: 1.05 }}
     >
-      {/* Icon placeholder */}
-      <div
-        className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
-        style={{
-          backgroundColor: `${model.iconColor}15`,
-          border: `1px solid ${model.iconColor}30`,
-        }}
-      >
-        <span
-          className="text-lg font-bold font-[family-name:var(--font-space-grotesk)]"
-          style={{ color: model.iconColor }}
-        >
-          {model.name.charAt(0)}
-        </span>
+      {/* Icon from @lobehub/icons - white mono */}
+      <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-white/5 border border-white/10">
+        <model.Icon size={22} color="#fff" />
       </div>
 
       {/* Model name */}
@@ -65,6 +70,8 @@ function ModelCard({ model, index }: { model: AIModel; index: number }) {
     </motion.div>
   );
 }
+
+// ─── Section ─────────────────────────────────────────────────────────────────
 
 export default function AIModelsHub() {
   const sectionRef = useRef<HTMLElement>(null);
