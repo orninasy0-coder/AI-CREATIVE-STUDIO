@@ -4,37 +4,36 @@ import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import {
-  OpenAI,
-  Flux,
-  Midjourney,
-  Google,
-  Kling,
-  DeepMind,
-  Runway,
-  ByteDance,
-  Hunyuan,
-  type LucideIcon,
-} from '@lobehub/icons';
+  OpenAIIcon,
+  FluxIcon,
+  MidjourneyIcon,
+  GoogleIcon,
+  KlingIcon,
+  DeepMindIcon,
+  RunwayIcon,
+  ByteDanceIcon,
+  HunyuanIcon,
+} from '@/components/icons/BrandIcons';
 
 // ─── Model Data ──────────────────────────────────────────────────────────────
 
 interface AIModel {
   name: string;
   provider: string;
-  Icon: LucideIcon | React.ComponentType<{ size?: number; color?: string }>;
+  Icon: React.ComponentType<{ size?: number | string; color?: string; className?: string; style?: React.CSSProperties }>;
 }
 
 const models: AIModel[] = [
-  { name: 'GPT Image', provider: 'OpenAI', Icon: OpenAI },
-  { name: 'Flux', provider: 'Black Forest Labs', Icon: Flux },
-  { name: 'Midjourney', provider: 'Midjourney', Icon: Midjourney },
-  { name: 'Imagen', provider: 'Google', Icon: Google },
-  { name: 'Kling', provider: 'Kuaishou', Icon: Kling },
-  { name: 'Veo', provider: 'Google DeepMind', Icon: DeepMind },
-  { name: 'Runway', provider: 'Runway', Icon: Runway },
-  { name: 'Seedance', provider: 'ByteDance', Icon: ByteDance },
-  { name: 'Wan', provider: 'Alibaba', Icon: Hunyuan },
-  { name: 'Hunyuan', provider: 'Tencent', Icon: Hunyuan },
+  { name: 'GPT Image', provider: 'OpenAI', Icon: OpenAIIcon },
+  { name: 'Flux', provider: 'Black Forest Labs', Icon: FluxIcon },
+  { name: 'Midjourney', provider: 'Midjourney', Icon: MidjourneyIcon },
+  { name: 'Imagen', provider: 'Google', Icon: GoogleIcon },
+  { name: 'Kling', provider: 'Kuaishou', Icon: KlingIcon },
+  { name: 'Veo', provider: 'Google DeepMind', Icon: DeepMindIcon },
+  { name: 'Runway', provider: 'Runway', Icon: RunwayIcon },
+  { name: 'Seedance', provider: 'ByteDance', Icon: ByteDanceIcon },
+  { name: 'Wan', provider: 'Alibaba', Icon: HunyuanIcon },
+  { name: 'Hunyuan', provider: 'Tencent', Icon: HunyuanIcon },
 ];
 
 // ─── Model Card ──────────────────────────────────────────────────────────────
@@ -53,7 +52,7 @@ function ModelCard({ model, index }: { model: AIModel; index: number }) {
       }}
       whileHover={{ scale: 1.05 }}
     >
-      {/* Icon from @lobehub/icons - white mono */}
+      {/* Brand icon - white/black mono */}
       <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-white/5 border border-white/10">
         <model.Icon size={22} color="#fff" />
       </div>
