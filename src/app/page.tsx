@@ -1,29 +1,22 @@
 'use client';
 
-import React, { Suspense, lazy } from 'react';
 import Header from '@/components/header/Header';
 import HeroSection from '@/components/sections/HeroSection';
 import TrustedModelsBar from '@/components/sections/TrustedModelsBar';
 import AIModelsHub from '@/components/sections/AIModelsHub';
 import CreativeCategories from '@/components/sections/CreativeCategories';
-
-// Lazy load below-the-fold sections for performance
-const TrendingPresets = lazy(() => import('@/components/sections/TrendingPresets'));
-const GPTImageGallery = lazy(() => import('@/components/sections/GPTImageGallery'));
-const CanvasBanner = lazy(() => import('@/components/sections/CanvasBanner'));
-const MarketingStudio = lazy(() => import('@/components/sections/MarketingStudio'));
-const SeedanceSection = lazy(() => import('@/components/sections/SeedanceSection'));
-const PhotodumpSection = lazy(() => import('@/components/sections/PhotodumpSection'));
-const ExploreFeatures = lazy(() => import('@/components/sections/ExploreFeatures'));
-const AITools = lazy(() => import('@/components/sections/AITools'));
-const WhySection = lazy(() => import('@/components/sections/WhySection'));
-const PricingSection = lazy(() => import('@/components/sections/PricingSection'));
-const CTASection = lazy(() => import('@/components/sections/CTASection'));
-const FooterSection = lazy(() => import('@/components/sections/FooterSection'));
-
-function SectionSkeleton() {
-  return <div className="min-h-[200px]" />;
-}
+import TrendingPresets from '@/components/sections/TrendingPresets';
+import GPTImageGallery from '@/components/sections/GPTImageGallery';
+import CanvasBanner from '@/components/sections/CanvasBanner';
+import MarketingStudio from '@/components/sections/MarketingStudio';
+import SeedanceSection from '@/components/sections/SeedanceSection';
+import PhotodumpSection from '@/components/sections/PhotodumpSection';
+import ExploreFeatures from '@/components/sections/ExploreFeatures';
+import AITools from '@/components/sections/AITools';
+import WhySection from '@/components/sections/WhySection';
+import PricingSection from '@/components/sections/PricingSection';
+import CTASection from '@/components/sections/CTASection';
+import FooterSection from '@/components/sections/FooterSection';
 
 export default function Home() {
   return (
@@ -34,43 +27,19 @@ export default function Home() {
         <TrustedModelsBar />
         <AIModelsHub />
         <CreativeCategories />
-        <Suspense fallback={<SectionSkeleton />}>
-          <TrendingPresets />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <GPTImageGallery />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <CanvasBanner />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <MarketingStudio />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <SeedanceSection />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <PhotodumpSection />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <ExploreFeatures />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <AITools />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <WhySection />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <PricingSection />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <CTASection />
-        </Suspense>
+        <TrendingPresets />
+        <GPTImageGallery />
+        <CanvasBanner />
+        <MarketingStudio />
+        <SeedanceSection />
+        <PhotodumpSection />
+        <ExploreFeatures />
+        <AITools />
+        <WhySection />
+        <PricingSection />
+        <CTASection />
       </main>
-      <Suspense fallback={<div className="min-h-[100px]" />}>
-        <FooterSection />
-      </Suspense>
+      <FooterSection />
     </div>
   );
 }
