@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Cpu, Wrench, Infinity, Play } from 'lucide-react';
 
@@ -73,28 +72,15 @@ export default function HeroSection() {
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Autoplay may be blocked, that's fine
+        // Autoplay may be blocked
       });
     }
   }, []);
 
   return (
     <section className="relative w-full h-screen min-h-[700px] bg-[#000000] overflow-hidden flex items-center">
-      {/* ── Video Background ── */}
-      <video
-        ref={videoRef}
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ filter: 'brightness(0.4)' }}
-      >
-        <source src="/images/hero-video.mp4" type="video/mp4" />
-      </video>
-
-      {/* ── Dark overlay on top of video ── */}
-      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+      {/* ── Dark base background ── */}
+      <div className="absolute inset-0 bg-[#000000]" />
 
       {/* ── Grid Pattern Overlay ── */}
       <div
@@ -106,8 +92,24 @@ export default function HeroSection() {
         }}
       />
 
-      {/* ── Dark Gradient Overlay (bottom to top) ── */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/90 via-black/30 to-black/50" />
+      {/* ── Video on the right side ── */}
+      <div className="absolute right-0 top-0 h-full w-[55%] overflow-hidden pointer-events-none">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ filter: 'brightness(0.5) saturate(1.2)' }}
+        >
+          <source src="/images/hero-video.mp4" type="video/mp4" />
+        </video>
+        {/* Gradient fade from left to right over video */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
+        {/* Gradient fade from bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+      </div>
 
       {/* ── Radial Glow (left) ── */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none">

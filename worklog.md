@@ -1,22 +1,20 @@
 ---
-Task ID: 1
+Task ID: 2
 Agent: Main
-Task: Fix 4 issues - logo size, mega menu hover, header animated background, server performance
+Task: Fix 3 issues - logo size 18px, mega menu sticking, hero video positioning
 
 Work Log:
-- Read Header.tsx, HeroSection.tsx, page.tsx, globals.css to understand current state
-- Checked logo files - logo.png and logo-text.png are same size (131911 bytes)
-- Rewrote Header.tsx with all 4 fixes:
-  1. Logo: Changed from logo-text.png to logo.png with height:28px to match old text span size
-  2. Mega menus: Fixed hover/close logic - menu opens on hover, closes 200ms after mouse leaves both trigger and panel. Added proper cancelCloseMegaMenu on panel enter.
-  3. Header background: Added animated right-side with two Framer Motion orbs (lime glow + white glow) with infinite loop animations, plus gradient overlay
-  4. Added more audio menu items with icons (Sound Effects, Music Generation, Podcast Editor, AudioCraft, SonicPro)
-- Optimized page.tsx with lazy loading for below-the-fold sections using React.lazy() + Suspense
-- Verified all fixes via Agent Browser - all passing
+- Changed logo height from 28px to 18px with width: auto exactly as user specified
+- Completely rewrote mega menu hover logic - removed timeout-based approach
+- New approach: Single hover zone wrapper for nav + dropdown, uses onMouseLeave on wrapper to close immediately
+- Dropdown is now absolutely positioned inside the nav hover zone (no more fixed positioning with gap)
+- Moved mega menu panel inside the nav container so mouseLeave covers both trigger and dropdown
+- Hero section: Video moved from full-width background to right-side positioning (55% width)
+- Video positioned with absolute right-0, gradient overlay fades from left to right over video
+- Text content stays on the left side naturally
 
 Stage Summary:
-- Logo now displays as uploaded image at 28px height matching old text span
-- Mega menus properly open on hover and close when mouse leaves (200ms debounce)
-- Header has animated glowing orbs on right side with infinite loop
-- Page performance improved with lazy loading for 12 below-the-fold sections
-- No lint errors, server running without issues
+- Logo: 18px height, width: auto - verified by browser (computed: 27px × 18px)
+- Mega menus: All 3 menus open on hover, close immediately when mouse leaves - no sticking
+- Hero video: Right side at 55% width, text on left - verified
+- All fixes verified via Agent Browser with no issues

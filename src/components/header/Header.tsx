@@ -351,8 +351,7 @@ export default function Header() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const menuAreaRef = useRef<HTMLDivElement>(null);
+  const hoverZoneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -362,7 +361,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on resize to desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
@@ -371,27 +369,6 @@ export default function Header() {
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const openMegaMenu = useCallback((label: string) => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-    setActiveMenu(label);
-  }, []);
-
-  const scheduleCloseMegaMenu = useCallback(() => {
-    closeTimeoutRef.current = setTimeout(() => {
-      setActiveMenu(null);
-    }, 200);
-  }, []);
-
-  const cancelCloseMegaMenu = useCallback(() => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
   }, []);
 
   const handleMobileToggle = useCallback((label: string) => {
@@ -410,39 +387,37 @@ export default function Header() {
       >
         <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-4 lg:px-6 relative">
           {/* Logo */}
-          <div className="flex items-center shrink-0">
+          <div className="flex items-center shrink-0 logo">
             <Image
               src="/images/logo.png"
               alt="AI Creative Studio"
-              width={140}
-              height={28}
-              style={{ width: 'auto', height: '28px' }}
+              width={90}
+              height={18}
+              style={{ width: 'auto', height: '18px' }}
               className="object-contain"
               priority
             />
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
+          {/* Desktop Navigation + Mega Menu Hover Zone */}
+          <div
+            ref={hoverZoneRef}
+            className="hidden lg:flex items-center gap-0.5 flex-1 justify-center"
+            onMouseLeave={() => setActiveMenu(null)}
+          >
             {NAV_ITEMS.map((item) => (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => {
-                  if (item.hasMegaMenu) {
-                    openMegaMenu(item.label);
-                  }
-                }}
-                onMouseLeave={() => {
-                  if (item.hasMegaMenu) {
-                    scheduleCloseMegaMenu();
-                  }
-                }}
-              >
+              <div key={item.label} className="relative">
                 <button
                   className={`flex items-center gap-1 px-2.5 py-1.5 text-sm text-white hover:text-[#D7FF00] transition-colors rounded-md whitespace-nowrap ${
                     activeMenu === item.label ? 'text-[#D7FF00]' : ''
                   }`}
+                  onMouseEnter={() => {
+                    if (item.hasMegaMenu) {
+                      setActiveMenu(item.label);
+                    } else {
+                      setActiveMenu(null);
+                    }
+                  }}
                 >
                   {item.label}
                   {item.hasMegaMenu && (
@@ -456,7 +431,24 @@ export default function Header() {
                 </button>
               </div>
             ))}
-          </nav>
+
+            {/* Mega Menu Dropdown - inside the hover zone */}
+            <AnimatePresence>
+              {activeMenu && MEGA_MENU_MAP[activeMenu] && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
+                >
+                  <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-5 w-[900px] max-h-[65vh] overflow-y-auto mega-menu-scroll">
+                    <MegaMenuPanel data={MEGA_MENU_MAP[activeMenu]} />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-3 shrink-0">
@@ -514,37 +506,17 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Desktop Mega Menu Dropdown */}
+      {/* Backdrop when mega menu is open */}
       <AnimatePresence>
-        {activeMenu && MEGA_MENU_MAP[activeMenu] && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="fixed inset-0 top-16 z-30 bg-black/40 backdrop-blur-sm"
-              onMouseEnter={scheduleCloseMegaMenu}
-            />
-            {/* Menu Panel */}
-            <motion.div
-              ref={menuAreaRef}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="fixed top-16 left-0 right-0 z-40"
-              onMouseEnter={cancelCloseMegaMenu}
-              onMouseLeave={scheduleCloseMegaMenu}
-            >
-              <div className="max-w-[900px] mx-auto px-4 lg:px-6">
-                <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-5 max-h-[65vh] overflow-y-auto mega-menu-scroll">
-                  <MegaMenuPanel data={MEGA_MENU_MAP[activeMenu]} />
-                </div>
-              </div>
-            </motion.div>
-          </>
+        {activeMenu && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 top-16 z-30 bg-black/40 backdrop-blur-sm"
+            onMouseEnter={() => setActiveMenu(null)}
+          />
         )}
       </AnimatePresence>
 
@@ -559,9 +531,9 @@ export default function Header() {
               <Image
                 src="/images/logo.png"
                 alt="AI Creative Studio"
-                width={120}
-                height={24}
-                style={{ width: 'auto', height: '24px' }}
+                width={80}
+                height={16}
+                style={{ width: 'auto', height: '16px' }}
                 className="object-contain"
               />
             </SheetTitle>
