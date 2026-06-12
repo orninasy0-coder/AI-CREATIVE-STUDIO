@@ -41,6 +41,11 @@ import {
   Star,
   Circle,
   Volume2,
+  Music,
+  Headphones,
+  Speaker,
+  Radio,
+  AudioLines,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -165,6 +170,9 @@ const AUDIO_MEGA_MENU: MegaMenuData = {
         { label: 'Voiceover', icon: Mic, description: 'Generate natural speech from text' },
         { label: 'Change Voice', icon: RefreshCw, description: 'Swap voices in any audio or video' },
         { label: 'Translation', icon: Languages, description: 'Translate speech in any language' },
+        { label: 'Sound Effects', icon: Volume2, description: 'Generate custom sound effects' },
+        { label: 'Music Generation', icon: Music, description: 'Create original music tracks' },
+        { label: 'Podcast Editor', icon: Headphones, description: 'AI-powered podcast editing' },
       ],
     },
     {
@@ -174,6 +182,8 @@ const AUDIO_MEGA_MENU: MegaMenuData = {
         { label: 'MiniMax Speech 2.8', icon: Volume2, description: 'Studio-quality text-to-speech', badge: 'TOP' },
         { label: 'Seed Speech', icon: Languages, description: 'ByteDance multilingual text-to-speech', badge: 'NEW' },
         { label: 'VibeVoice', icon: Sparkles, description: 'Long-form expressive voice synthesis', badge: 'NEW' },
+        { label: 'AudioCraft', icon: Speaker, description: 'High-fidelity audio generation' },
+        { label: 'SonicPro', icon: AudioLines, description: 'Professional audio mastering' },
       ],
     },
   ],
@@ -260,7 +270,7 @@ function MegaMenuItemRow({ item }: { item: MegaMenuItem }) {
 
 function MegaMenuPanel({ data }: { data: MegaMenuData }) {
   return (
-    <div className="flex gap-0 mega-menu-scroll">
+    <div className="flex gap-0">
       {data.columns.map((col, colIdx) => (
         <div
           key={col.heading}
@@ -341,8 +351,8 @@ export default function Header() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const megaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const megaMenuRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const menuAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -364,23 +374,23 @@ export default function Header() {
   }, []);
 
   const openMegaMenu = useCallback((label: string) => {
-    if (megaMenuTimeoutRef.current) {
-      clearTimeout(megaMenuTimeoutRef.current);
-      megaMenuTimeoutRef.current = null;
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
     }
     setActiveMenu(label);
   }, []);
 
-  const closeMegaMenu = useCallback(() => {
-    megaMenuTimeoutRef.current = setTimeout(() => {
+  const scheduleCloseMegaMenu = useCallback(() => {
+    closeTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
-    }, 150);
+    }, 200);
   }, []);
 
   const cancelCloseMegaMenu = useCallback(() => {
-    if (megaMenuTimeoutRef.current) {
-      clearTimeout(megaMenuTimeoutRef.current);
-      megaMenuTimeoutRef.current = null;
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
     }
   }, []);
 
@@ -398,15 +408,15 @@ export default function Header() {
         }`}
         style={{ height: 64 }}
       >
-        <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-4 lg:px-6">
+        <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-4 lg:px-6 relative">
           {/* Logo */}
           <div className="flex items-center shrink-0">
             <Image
-              src="/images/logo-text.png"
+              src="/images/logo.png"
               alt="AI Creative Studio"
-              width={180}
-              height={36}
-              style={{ width: 'auto', height: '36px' }}
+              width={140}
+              height={28}
+              style={{ width: 'auto', height: '28px' }}
               className="object-contain"
               priority
             />
@@ -425,7 +435,7 @@ export default function Header() {
                 }}
                 onMouseLeave={() => {
                   if (item.hasMegaMenu) {
-                    closeMegaMenu();
+                    scheduleCloseMegaMenu();
                   }
                 }}
               >
@@ -464,42 +474,77 @@ export default function Header() {
               <Menu className="w-5 h-5" />
             </button>
           </div>
+
+          {/* Animated Right Background */}
+          <div className="absolute right-0 top-0 h-full w-[300px] pointer-events-none overflow-hidden opacity-30">
+            <div className="absolute inset-0 bg-gradient-to-l from-[#D7FF00]/10 via-transparent to-transparent" />
+            <motion.div
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-[200px] h-[200px] rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(215,255,0,0.15) 0%, transparent 70%)',
+              }}
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.4, 0.7, 0.4],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+            <motion.div
+              className="absolute right-10 top-1/2 -translate-y-1/2 w-[100px] h-[100px] rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
+              }}
+              animate={{
+                scale: [1, 1.4, 1],
+                opacity: [0.3, 0.6, 0.3],
+                x: [0, -10, 0],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: 1,
+              }}
+            />
+          </div>
         </div>
       </header>
 
       {/* Desktop Mega Menu Dropdown */}
       <AnimatePresence>
         {activeMenu && MEGA_MENU_MAP[activeMenu] && (
-          <motion.div
-            ref={megaMenuRef}
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed top-16 left-0 right-0 z-40"
-            onMouseEnter={cancelCloseMegaMenu}
-            onMouseLeave={closeMegaMenu}
-          >
-            <div className="max-w-[900px] mx-auto px-4 lg:px-6">
-              <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-5 max-h-[70vh] overflow-y-auto mega-menu-scroll">
-                <MegaMenuPanel data={MEGA_MENU_MAP[activeMenu]} />
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="fixed inset-0 top-16 z-30 bg-black/40 backdrop-blur-sm"
+              onMouseEnter={scheduleCloseMegaMenu}
+            />
+            {/* Menu Panel */}
+            <motion.div
+              ref={menuAreaRef}
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="fixed top-16 left-0 right-0 z-40"
+              onMouseEnter={cancelCloseMegaMenu}
+              onMouseLeave={scheduleCloseMegaMenu}
+            >
+              <div className="max-w-[900px] mx-auto px-4 lg:px-6">
+                <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-5 max-h-[65vh] overflow-y-auto mega-menu-scroll">
+                  <MegaMenuPanel data={MEGA_MENU_MAP[activeMenu]} />
+                </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Backdrop when mega menu is open (desktop) */}
-      <AnimatePresence>
-        {activeMenu && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 top-16 z-30 bg-black/40 backdrop-blur-sm"
-            onMouseEnter={closeMegaMenu}
-          />
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
@@ -512,11 +557,11 @@ export default function Header() {
           <SheetHeader className="p-4 border-b border-white/5">
             <SheetTitle className="flex items-center gap-2.5 text-white">
               <Image
-                src="/images/logo-text.png"
+                src="/images/logo.png"
                 alt="AI Creative Studio"
-                width={140}
-                height={28}
-                style={{ width: 'auto', height: '28px' }}
+                width={120}
+                height={24}
+                style={{ width: 'auto', height: '24px' }}
                 className="object-contain"
               />
             </SheetTitle>
