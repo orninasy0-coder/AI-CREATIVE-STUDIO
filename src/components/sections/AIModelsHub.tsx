@@ -2,19 +2,10 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ArrowRight, Cpu, BarChart3, Monitor, Star, Atom, LayoutGrid } from 'lucide-react';
+import { ArrowRight, Cpu, Monitor, Star, Atom, LayoutGrid } from 'lucide-react';
 import {
-  OpenAIIcon,
-  FluxIcon,
-  ByteDanceIcon,
-  RecraftIcon,
-  KlingIcon,
-  GrokIcon,
-  DeepMindIcon,
-  RunwayIcon,
+  OpenAIIcon, FluxIcon, ByteDanceIcon, RecraftIcon, KlingIcon, GrokIcon, DeepMindIcon,
 } from '@/components/icons/BrandIcons';
-
-// ─── Types ──────────────────────────────────────────────────────────────────
 
 type BadgeType = 'NEW' | 'TRENDING' | null;
 type CategoryType = 'Image' | 'Video' | null;
@@ -29,218 +20,92 @@ interface FeatureCard {
   isSpecial?: boolean;
 }
 
-// ─── Data ───────────────────────────────────────────────────────────────────
-
 const features: FeatureCard[] = [
   {
     title: 'SUPERCOMPUTER',
-    description: 'Agents, automation, skills, connectors, AI drive & more',
+    description: 'Agents, automation, skills, connectors & more',
     badge: 'NEW',
     LucideIcon: Cpu,
     isSpecial: true,
   },
-  {
-    title: 'GPT Image 2',
-    description: 'Generate high-quality visuals with near-perfect text rendering',
-    category: 'Image',
-    badge: 'NEW',
-    Icon: OpenAIIcon,
-  },
-  {
-    title: 'Seedance 2.0',
-    description: 'Create high-quality videos in seconds',
-    category: 'Video',
-    badge: 'TRENDING',
-    Icon: ByteDanceIcon,
-  },
-  {
-    title: 'Marketing Studio',
-    description: 'Launch full campaigns from one prompt',
-    badge: 'TRENDING',
-    LucideIcon: Monitor,
-  },
-  {
-    title: 'MCP & CLI',
-    description: 'Turn Claude into a creative engine',
-    badge: 'NEW',
-    LucideIcon: Star,
-  },
-  {
-    title: 'Higgsfield Canvas',
-    description: 'Generate stunning media with AI canvas',
-    badge: 'NEW',
-    LucideIcon: Atom,
-  },
-  {
-    title: 'Kling 3.0',
-    description: 'Cinematic videos with synchronized audio',
-    category: 'Video',
-    badge: 'TRENDING',
-    Icon: KlingIcon,
-  },
-  {
-    title: 'Cinema Studio 3.5',
-    description: 'Create cinematic scenes effortlessly',
-    LucideIcon: LayoutGrid,
-  },
+  { title: 'GPT Image 2', description: 'Near-perfect text rendering', category: 'Image', badge: 'NEW', Icon: OpenAIIcon },
+  { title: 'Seedance 2.0', description: 'High-quality videos in seconds', category: 'Video', badge: 'TRENDING', Icon: ByteDanceIcon },
+  { title: 'Marketing Studio', description: 'Full campaigns from one prompt', badge: 'TRENDING', LucideIcon: Monitor },
+  { title: 'MCP & CLI', description: 'Turn Claude into a creative engine', badge: 'NEW', LucideIcon: Star },
+  { title: 'Canvas', description: 'Stunning media with AI canvas', badge: 'NEW', LucideIcon: Atom },
+  { title: 'Kling 3.0', description: 'Cinematic videos with audio', category: 'Video', badge: 'TRENDING', Icon: KlingIcon },
+  { title: 'Cinema Studio', description: 'Cinematic scenes effortlessly', LucideIcon: LayoutGrid },
 ];
-
-// ─── Badge ──────────────────────────────────────────────────────────────────
 
 function Badge({ type }: { type: BadgeType }) {
   if (!type) return null;
-  const classes =
-    type === 'NEW'
-      ? 'bg-[#D7FF00] text-black'
-      : 'bg-[#FF3366] text-white';
-
-  return (
-    <span className={`${classes} text-[10px] font-bold px-2 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}>
-      {type}
-    </span>
-  );
+  const cls = type === 'NEW' ? 'bg-[#D7FF00] text-black' : 'bg-[#FF3366] text-white';
+  return <span className={`${cls} text-[9px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}>{type}</span>;
 }
-
-// ─── Special Card (SUPERCOMPUTER) ──────────────────────────────────────────
 
 function SpecialCard({ card, index }: { card: FeatureCard; index: number }) {
   return (
     <motion.div
-      className="group bg-[#1A1A1A] rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:bg-[#222222] relative flex flex-col justify-between min-h-[220px]"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-30px' }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.25, 0.4, 0.25, 1] }}
+      className="group bg-[#111] rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:bg-[#181818] relative flex flex-col justify-between min-h-[220px] border border-white/[0.04]"
+      initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-20px' }}
+      transition={{ duration: 0.4, delay: index * 0.05, ease: [0.25, 0.4, 0.25, 1] }}
     >
-      {/* Badge */}
-      <div className="absolute top-5 right-5">
-        <Badge type={card.badge} />
-      </div>
-
-      {/* Icon + Title */}
+      <div className="absolute top-5 right-5"><Badge type={card.badge} /></div>
       <div>
-        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/5 mb-4">
-          {card.LucideIcon && <card.LucideIcon className="w-5 h-5 text-white" size={20} />}
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/[0.04] mb-4">
+          {card.LucideIcon && <card.LucideIcon className="w-5 h-5 text-[#D7FF00]" size={20} />}
         </div>
-        <h3 className="text-white font-bold text-lg font-[family-name:var(--font-space-grotesk)]">
-          {card.title}
-        </h3>
-        <p className="text-[#5C5C5C] text-sm mt-1.5 font-[family-name:var(--font-inter)] leading-relaxed">
-          {card.description}
-        </p>
+        <h3 className="text-white font-bold text-base font-[family-name:var(--font-space-grotesk)]">{card.title}</h3>
+        <p className="text-white/30 text-sm mt-1.5 font-[family-name:var(--font-inter)] leading-relaxed">{card.description}</p>
       </div>
-
-      {/* Mini brand icons row */}
       <div className="flex items-center gap-2 mt-5">
-        <div className="w-7 h-7 rounded-full bg-[#FF3366]/20 flex items-center justify-center">
-          <RecraftIcon size={14} color="#FF3366" />
-        </div>
-        <div className="w-7 h-7 rounded-full bg-[#D7FF00]/20 flex items-center justify-center">
-          <FluxIcon size={14} color="#D7FF00" />
-        </div>
-        <div className="w-7 h-7 rounded-full bg-[#FF3366]/20 flex items-center justify-center">
-          <KlingIcon size={14} color="#FF3366" />
-        </div>
-        <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
-          <GrokIcon size={14} color="#fff" />
-        </div>
+        <div className="w-6 h-6 rounded-full bg-[#FF3366]/10 flex items-center justify-center"><RecraftIcon size={11} color="#FF3366" /></div>
+        <div className="w-6 h-6 rounded-full bg-[#D7FF00]/10 flex items-center justify-center"><FluxIcon size={11} color="#D7FF00" /></div>
+        <div className="w-6 h-6 rounded-full bg-[#FF3366]/10 flex items-center justify-center"><KlingIcon size={11} color="#FF3366" /></div>
+        <div className="w-6 h-6 rounded-full bg-white/[0.04] flex items-center justify-center"><GrokIcon size={11} color="#fff" /></div>
       </div>
-
-      {/* Try now button */}
       <button className="mt-4 bg-white text-black text-sm font-semibold px-5 py-2 rounded-lg flex items-center gap-1.5 hover:bg-white/90 transition-colors w-fit font-[family-name:var(--font-space-grotesk)]">
-        Try now
-        <ArrowRight className="w-3.5 h-3.5" />
+        Try now <ArrowRight className="w-3.5 h-3.5" />
       </button>
     </motion.div>
   );
 }
 
-// ─── Feature Card ──────────────────────────────────────────────────────────
-
-function FeatureCard({ card, index }: { card: FeatureCard; index: number }) {
+function FeatureCardComponent({ card, index }: { card: FeatureCard; index: number }) {
   return (
     <motion.div
-      className="group bg-[#1A1A1A] rounded-2xl p-5 cursor-pointer transition-all duration-300 hover:bg-[#222222] relative"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-30px' }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.25, 0.4, 0.25, 1] }}
+      className="group bg-[#111] rounded-2xl p-5 cursor-pointer transition-all duration-300 hover:bg-[#181818] relative border border-white/[0.04]"
+      initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-20px' }}
+      transition={{ duration: 0.4, delay: index * 0.05, ease: [0.25, 0.4, 0.25, 1] }}
     >
-      {/* Badge */}
-      {card.badge && (
-        <div className="absolute top-5 right-5">
-          <Badge type={card.badge} />
-        </div>
-      )}
-
-      {/* Icon */}
-      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/5 mb-3">
-        {card.Icon ? (
-          <card.Icon size={20} color="#fff" />
-        ) : card.LucideIcon ? (
-          <card.LucideIcon className="w-5 h-5 text-white" size={20} />
-        ) : null}
+      {card.badge && <div className="absolute top-4 right-4"><Badge type={card.badge} /></div>}
+      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/[0.04] mb-3">
+        {card.Icon ? <card.Icon size={18} color="rgba(255,255,255,0.7)" /> : card.LucideIcon ? <card.LucideIcon className="w-[18px] h-[18px] text-white/60" size={18} /> : null}
       </div>
-
-      {/* Category */}
-      {card.category && (
-        <span className="text-[#5C5C5C] text-xs font-[family-name:var(--font-inter)] uppercase tracking-wider">
-          {card.category}
-        </span>
-      )}
-
-      {/* Title */}
-      <h3 className="text-white font-semibold text-sm font-[family-name:var(--font-space-grotesk)] mt-0.5">
-        {card.title}
-      </h3>
-
-      {/* Description */}
-      <p className="text-[#5C5C5C] text-xs mt-1 font-[family-name:var(--font-inter)] leading-relaxed">
-        {card.description}
-      </p>
+      {card.category && <span className="text-white/20 text-[10px] font-[family-name:var(--font-inter)] uppercase tracking-wider">{card.category}</span>}
+      <h3 className="text-white font-semibold text-sm font-[family-name:var(--font-space-grotesk)] mt-0.5">{card.title}</h3>
+      <p className="text-white/25 text-xs mt-1 font-[family-name:var(--font-inter)] leading-relaxed">{card.description}</p>
     </motion.div>
   );
 }
 
-// ─── Section ───────────────────────────────────────────────────────────────
-
 export default function AIModelsHub() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#000000] py-16 md:py-20">
-      <div className="px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto">
-        {/* Header */}
-        <motion.div
-          className="flex items-end justify-between mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-        >
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-3xl md:text-4xl font-bold text-white leading-tight">
-            All leading AI models.
-            <br />
-            One platform<span className="text-[#D7FF00]">.</span>
+    <section ref={ref} className="w-full bg-[#000] py-16 md:py-20">
+      <div className="px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
+        <motion.div className="flex items-end justify-between mb-8" initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
+            All leading AI models.<br />One platform<span className="text-[#D7FF00]">.</span>
           </h2>
-          <a
-            href="#"
-            className="text-[#D7FF00] text-sm font-[family-name:var(--font-space-grotesk)] font-medium hover:underline underline-offset-4 whitespace-nowrap flex items-center gap-1 shrink-0 ml-4"
-          >
-            View all models
-            <ArrowRight className="w-4 h-4" />
+          <a href="#" className="text-[#D7FF00] text-sm font-[family-name:var(--font-space-grotesk)] font-medium hover:underline underline-offset-4 whitespace-nowrap flex items-center gap-1 shrink-0 ml-4">
+            View all models <ArrowRight className="w-3.5 h-3.5" />
           </a>
         </motion.div>
-
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {features.map((card, index) =>
-            card.isSpecial ? (
-              <SpecialCard key={card.title} card={card} index={index} />
-            ) : (
-              <FeatureCard key={card.title} card={card} index={index} />
-            )
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {features.map((card, i) => card.isSpecial ? <SpecialCard key={card.title} card={card} index={i} /> : <FeatureCardComponent key={card.title} card={card} index={i} />)}
         </div>
       </div>
     </section>

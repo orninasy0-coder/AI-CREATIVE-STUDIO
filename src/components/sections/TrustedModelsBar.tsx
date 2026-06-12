@@ -1,31 +1,13 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
-  OpenAIIcon,
-  FluxIcon,
-  MidjourneyIcon,
-  GoogleIcon,
-  KlingIcon,
-  DeepMindIcon,
-  RunwayIcon,
-  ByteDanceIcon,
-  HunyuanIcon,
-  RecraftIcon,
-  GrokIcon,
-  SoraIcon,
-  ElevenLabsIcon,
-  MinimaxIcon,
-  StabilityIcon,
-  LumaIcon,
-  PikaIcon,
-  HailuoIcon,
-  IdeogramIcon,
-  ComfyUIIcon,
+  OpenAIIcon, FluxIcon, MidjourneyIcon, GoogleIcon, KlingIcon,
+  DeepMindIcon, RunwayIcon, ByteDanceIcon, HunyuanIcon, RecraftIcon,
+  GrokIcon, SoraIcon, ElevenLabsIcon, MinimaxIcon, StabilityIcon,
+  LumaIcon, PikaIcon, HailuoIcon, IdeogramIcon, ComfyUIIcon,
 } from '@/components/icons/BrandIcons';
-
-// ─── Model Data ──────────────────────────────────────────────────────────────
 
 interface ModelItem {
   name: string;
@@ -55,13 +37,11 @@ const models: ModelItem[] = [
   { name: 'ComfyUI', Icon: ComfyUIIcon },
 ];
 
-// ─── Component ───────────────────────────────────────────────────────────────
-
 function ModelChip({ model }: { model: ModelItem }) {
   return (
     <div className="shrink-0 flex items-center gap-2 px-3 py-1.5">
-      <model.Icon size={16} color="#fff" />
-      <span className="text-white/70 text-sm font-medium font-[family-name:var(--font-space-grotesk)]">
+      <model.Icon size={14} color="rgba(255,255,255,0.5)" />
+      <span className="text-white/40 text-xs font-medium font-[family-name:var(--font-space-grotesk)] tracking-wide">
         {model.name}
       </span>
     </div>
@@ -69,36 +49,20 @@ function ModelChip({ model }: { model: ModelItem }) {
 }
 
 export default function TrustedModelsBar() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-50px' });
-
   return (
-    <section
-      ref={sectionRef}
-      className="w-full bg-[#000000] py-2 overflow-hidden"
-    >
+    <section className="w-full bg-[#000] py-1 overflow-hidden -mt-4">
       <motion.div
-        className="max-w-[1400px] mx-auto flex justify-center"
-        initial={{ opacity: 0, y: 10 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+        className="max-w-[1400px] mx-auto"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center">
-          {/* Marquee Container */}
-          <div className="flex-1 overflow-hidden relative">
-            {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[#000000] to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#000000] to-transparent z-10 pointer-events-none" />
-
-            {/* Scrolling track - duplicated for seamless loop */}
+        <div className="flex items-center justify-center">
+          <div className="flex-1 overflow-hidden relative max-w-[1400px]">
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#000] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#000] to-transparent z-10 pointer-events-none" />
             <div className="flex animate-marquee">
-              {models.map((model) => (
-                <ModelChip key={`a-${model.name}`} model={model} />
-              ))}
-              {/* Duplicate for seamless loop */}
-              {models.map((model) => (
-                <ModelChip key={`b-${model.name}`} model={model} />
-              ))}
+              {models.map((m) => <ModelChip key={`a-${m.name}`} model={m} />)}
+              {models.map((m) => <ModelChip key={`b-${m.name}`} model={m} />)}
             </div>
           </div>
         </div>

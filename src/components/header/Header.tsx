@@ -34,22 +34,17 @@ import {
   Volume2,
   Music,
   Headphones,
-  Speaker,
-  AudioLines,
-  Plug,
   Cpu,
   Terminal,
   Webhook,
   Puzzle,
   Code2,
-  Zap,
   type LucideIcon,
 } from 'lucide-react';
 import {
   OpenAIIcon,
   FluxIcon,
   MidjourneyIcon,
-  GoogleIcon,
   KlingIcon,
   DeepMindIcon,
   RunwayIcon,
@@ -62,18 +57,14 @@ import {
   MinimaxIcon,
   HailuoIcon,
   LumaIcon,
-  PikaIcon,
   StabilityIcon,
   IdeogramIcon,
   SunoIcon,
   UdioIcon,
   CivitaiIcon,
   ComfyUIIcon,
-  ReplicateIcon,
   DoubaoIcon,
   CogVideoIcon,
-  ViduIcon,
-  PixVerseIcon,
 } from '@/components/icons/BrandIcons';
 import {
   Sheet,
@@ -85,8 +76,6 @@ import {
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 type BadgeType = 'TOP' | 'NEW' | 'OFF' | 'SOON' | null;
-
-// Icon can be either a Lucide icon or a brand icon
 type IconComponent = LucideIcon | ComponentType<{ size?: number | string; color?: string; className?: string; style?: React.CSSProperties }>;
 
 interface MegaMenuItem {
@@ -106,7 +95,7 @@ interface MegaMenuData {
   columns: MegaMenuColumn[];
 }
 
-// ─── Data ───────────────────────────────────────────────────────────────────
+// ─── Mega Menu Data ─────────────────────────────────────────────────────────
 
 const IMAGE_MEGA_MENU: MegaMenuData = {
   columns: [
@@ -114,16 +103,16 @@ const IMAGE_MEGA_MENU: MegaMenuData = {
       heading: 'FEATURES',
       items: [
         { label: 'Create Image', icon: Camera, description: 'Generate AI images', badge: 'TOP' },
-        { label: 'Cinematic Cameras', icon: Film, description: 'Image generation with camera controls', badge: 'TOP' },
-        { label: 'Moodboard', icon: LayoutGrid, description: 'Turn your references into a focused moodboard' },
+        { label: 'Cinematic Cameras', icon: Film, description: 'Camera controls for image gen', badge: 'TOP' },
+        { label: 'Moodboard', icon: LayoutGrid, description: 'Focus your references' },
         { label: 'Soul ID Character', icon: User, description: 'Create unique character' },
-        { label: 'AI Influencer', icon: Sparkles, description: 'Create and manage your AI influencer' },
+        { label: 'AI Influencer', icon: Sparkles, description: 'Manage your AI influencer' },
         { label: 'Photodump', icon: ImageIcon, description: 'Generate Your Aesthetic', badge: 'NEW' },
-        { label: 'Relight', icon: Sun, description: 'Adjust lighting position, color, and brightness' },
-        { label: 'Inpaint', icon: Paintbrush, description: 'Select an area, describe the change' },
+        { label: 'Relight', icon: Sun, description: 'Adjust lighting & color' },
+        { label: 'Inpaint', icon: Paintbrush, description: 'Select area, describe change' },
         { label: 'Image Upscale', icon: Maximize, description: 'Enhance image quality' },
-        { label: 'Face Swap', icon: Smile, description: 'Create Realistic Face Swaps' },
-        { label: 'Character Swap', icon: Users, description: 'Create Realistic Character Swaps' },
+        { label: 'Face Swap', icon: Smile, description: 'Realistic Face Swaps' },
+        { label: 'Character Swap', icon: Users, description: 'Realistic Character Swaps' },
         { label: 'Draw to Edit', icon: Pen, description: 'From sketch to picture' },
         { label: 'Fashion Factory', icon: Shirt, description: 'Create fashion sets' },
       ],
@@ -131,20 +120,15 @@ const IMAGE_MEGA_MENU: MegaMenuData = {
     {
       heading: 'MODELS',
       items: [
-        { label: 'GPT Image 2', icon: OpenAIIcon, description: '4K images with near-perfect text rendering', badge: 'NEW', isBrandIcon: true },
-        { label: 'GPT Image 1.5', icon: OpenAIIcon, description: 'True-color precision rendering', isBrandIcon: true },
-        { label: 'Flux', icon: FluxIcon, description: 'State-of-the-art image generation', badge: 'TOP', isBrandIcon: true },
-        { label: 'Reve', icon: Sparkles, description: 'Advanced image editing model' },
-        { label: 'Seedream Lite', icon: DoubaoIcon, description: 'Intelligent visual reasoning', isBrandIcon: true },
-        { label: 'Seedream', icon: DoubaoIcon, description: 'Professional image generation', isBrandIcon: true },
-        { label: 'Midjourney', icon: MidjourneyIcon, description: 'Creative AI image generation', badge: 'TOP', isBrandIcon: true },
+        { label: 'GPT Image 2', icon: OpenAIIcon, description: 'Near-perfect text rendering', badge: 'NEW', isBrandIcon: true },
+        { label: 'Flux', icon: FluxIcon, description: 'State-of-the-art generation', badge: 'TOP', isBrandIcon: true },
+        { label: 'Midjourney', icon: MidjourneyIcon, description: 'Creative AI image gen', badge: 'TOP', isBrandIcon: true },
         { label: 'Ideogram', icon: IdeogramIcon, description: 'Text-in-image generation', badge: 'NEW', isBrandIcon: true },
-        { label: 'Recraft', icon: RecraftIcon, description: 'Photorealistic and expressive generation', badge: 'NEW', isBrandIcon: true },
+        { label: 'Recraft', icon: RecraftIcon, description: 'Photorealistic generation', badge: 'NEW', isBrandIcon: true },
         { label: 'Stability AI', icon: StabilityIcon, description: 'Stable Diffusion models', isBrandIcon: true },
-        { label: 'Grok Imagine', icon: GrokIcon, description: 'Versatile image styles by xAI', isBrandIcon: true },
-        { label: 'Sora', icon: SoraIcon, description: 'Cinematic stills from your imagination', isBrandIcon: true },
-        { label: 'Civitai', icon: CivitaiIcon, description: 'Community models & checkpoints', isBrandIcon: true },
-        { label: 'ComfyUI', icon: ComfyUIIcon, description: 'Node-based image workflows', isBrandIcon: true },
+        { label: 'Grok Imagine', icon: GrokIcon, description: 'Versatile styles by xAI', isBrandIcon: true },
+        { label: 'Civitai', icon: CivitaiIcon, description: 'Community models', isBrandIcon: true },
+        { label: 'ComfyUI', icon: ComfyUIIcon, description: 'Node-based workflows', isBrandIcon: true },
       ],
     },
   ],
@@ -155,39 +139,27 @@ const VIDEO_MEGA_MENU: MegaMenuData = {
     {
       heading: 'FEATURES',
       items: [
-        { label: 'Create Video', icon: Video, description: 'Generate AI videos from text or image', badge: 'TOP' },
-        { label: 'Cinema Studio', icon: Clapperboard, description: 'Cinematic videos with AI director', badge: 'TOP' },
-        { label: 'Mixed Media', icon: Layers, description: 'Create mixed media video projects' },
-        { label: 'Edit Video', icon: Scissors, description: 'Edit scenes, shots, elements' },
-        { label: 'Click to Ad', icon: MousePointerClick, description: 'Turn product URLs into video ads' },
-        { label: 'Sora Trends', icon: TrendingUp, description: 'Turn ideas into viral videos', badge: 'TOP' },
-        { label: 'Lipsync Studio', icon: Mic, description: 'Create talking clips with perfect lip sync' },
-        { label: 'Draw to Video', icon: Pen, description: 'Sketch turns into a cinema' },
-        { label: 'Sketch to Video', icon: Pencil, description: 'From sketch to video with Sora 2' },
-        { label: 'UGC Factory', icon: Users, description: 'Build UGC videos with AI avatars' },
-        { label: 'Video Upscale', icon: Maximize, description: 'Enhance video quality up to 4K' },
-        { label: 'Animate', icon: Play, description: 'Animate images and characters' },
-        { label: 'Vibe Motion', icon: Wind, description: 'Create professional motion graphics' },
-        { label: 'Recast Studio', icon: RefreshCw, description: 'Swap characters in videos' },
+        { label: 'Create Video', icon: Video, description: 'From text or image', badge: 'TOP' },
+        { label: 'Cinema Studio', icon: Clapperboard, description: 'AI director for videos', badge: 'TOP' },
+        { label: 'Edit Video', icon: Scissors, description: 'Edit scenes & shots' },
+        { label: 'Click to Ad', icon: MousePointerClick, description: 'URLs into video ads' },
+        { label: 'Lipsync Studio', icon: Mic, description: 'Perfect lip sync' },
+        { label: 'Video Upscale', icon: Maximize, description: 'Enhance up to 4K' },
+        { label: 'Animate', icon: Play, description: 'Animate images & characters' },
+        { label: 'Vibe Motion', icon: Wind, description: 'Professional motion graphics' },
       ],
     },
     {
       heading: 'MODELS',
       items: [
-        { label: 'Seedance 2.0', icon: ByteDanceIcon, description: 'Most advanced AI video model', badge: 'TOP', isBrandIcon: true },
-        { label: 'Kling 3.0', icon: KlingIcon, description: 'Cinematic videos with audio', badge: 'TOP', isBrandIcon: true },
-        { label: 'Kling Motion', icon: KlingIcon, description: 'Transfer motion from video to image', isBrandIcon: true },
-        { label: 'Kling Edit', icon: KlingIcon, description: 'Advanced video editing', isBrandIcon: true },
-        { label: 'Sora 2', icon: SoraIcon, description: "OpenAI's most advanced video model", badge: 'TOP', isBrandIcon: true },
-        { label: 'Google Veo 3.1 Lite', icon: DeepMindIcon, description: 'Fast video generation by Google', badge: 'NEW', isBrandIcon: true },
-        { label: 'Google Veo 3.1', icon: DeepMindIcon, description: 'Advanced AI video with sound', badge: 'TOP', isBrandIcon: true },
-        { label: 'Runway Gen-3', icon: RunwayIcon, description: 'Hollywood-grade AI video', isBrandIcon: true },
-        { label: 'Grok Video', icon: GrokIcon, description: 'Cinematic videos with synchronized audio', badge: 'NEW', isBrandIcon: true },
-        { label: 'Hunyuan Video', icon: HunyuanIcon, description: 'AI video generation by Tencent', badge: 'NEW', isBrandIcon: true },
-        { label: 'Minimax Hailuo', icon: HailuoIcon, description: 'Fastest high-dynamic video', isBrandIcon: true },
-        { label: 'Seedance Pro', icon: ByteDanceIcon, description: 'Pro-grade audio-visual sync', isBrandIcon: true },
-        { label: 'Luma Dream Machine', icon: LumaIcon, description: 'VFX and camera control', isBrandIcon: true },
-        { label: 'CogVideoX', icon: CogVideoIcon, description: 'Text-to-video generation', isBrandIcon: true },
+        { label: 'Seedance 2.0', icon: ByteDanceIcon, description: 'Most advanced video AI', badge: 'TOP', isBrandIcon: true },
+        { label: 'Kling 3.0', icon: KlingIcon, description: 'Cinematic with audio', badge: 'TOP', isBrandIcon: true },
+        { label: 'Sora 2', icon: SoraIcon, description: "OpenAI's video model", badge: 'TOP', isBrandIcon: true },
+        { label: 'Veo 3.1', icon: DeepMindIcon, description: 'Google video with sound', badge: 'NEW', isBrandIcon: true },
+        { label: 'Runway Gen-3', icon: RunwayIcon, description: 'Hollywood-grade video', isBrandIcon: true },
+        { label: 'Hunyuan Video', icon: HunyuanIcon, description: 'Tencent AI video', badge: 'NEW', isBrandIcon: true },
+        { label: 'Luma Dream', icon: LumaIcon, description: 'VFX & camera control', isBrandIcon: true },
+        { label: 'CogVideoX', icon: CogVideoIcon, description: 'Text-to-video gen', isBrandIcon: true },
       ],
     },
   ],
@@ -198,49 +170,45 @@ const AUDIO_MEGA_MENU: MegaMenuData = {
     {
       heading: 'FEATURES',
       items: [
-        { label: 'Voiceover', icon: Mic, description: 'Generate natural speech from text' },
-        { label: 'Change Voice', icon: RefreshCw, description: 'Swap voices in any audio or video' },
-        { label: 'Translation', icon: Languages, description: 'Translate speech in any language' },
-        { label: 'Sound Effects', icon: Volume2, description: 'Generate custom sound effects' },
-        { label: 'Music Generation', icon: Music, description: 'Create original music tracks' },
-        { label: 'Podcast Editor', icon: Headphones, description: 'AI-powered podcast editing' },
+        { label: 'Voiceover', icon: Mic, description: 'Natural speech from text' },
+        { label: 'Change Voice', icon: RefreshCw, description: 'Swap voices' },
+        { label: 'Translation', icon: Languages, description: 'Any language' },
+        { label: 'Sound Effects', icon: Volume2, description: 'Custom sound FX' },
+        { label: 'Music Generation', icon: Music, description: 'Original music tracks' },
       ],
     },
     {
       heading: 'MODELS',
       items: [
-        { label: 'Eleven v3', icon: ElevenLabsIcon, description: 'Expressive AI voice with emotion control', badge: 'TOP', isBrandIcon: true },
-        { label: 'MiniMax Speech 2.8', icon: MinimaxIcon, description: 'Studio-quality text-to-speech', badge: 'TOP', isBrandIcon: true },
-        { label: 'Seed Speech', icon: ByteDanceIcon, description: 'ByteDance multilingual text-to-speech', badge: 'NEW', isBrandIcon: true },
-        { label: 'VibeVoice', icon: Sparkles, description: 'Long-form expressive voice synthesis', badge: 'NEW' },
-        { label: 'Suno', icon: SunoIcon, description: 'AI music and song generation', isBrandIcon: true },
-        { label: 'Udio', icon: UdioIcon, description: 'Professional audio mastering', isBrandIcon: true },
+        { label: 'Eleven v3', icon: ElevenLabsIcon, description: 'Expressive AI voice', badge: 'TOP', isBrandIcon: true },
+        { label: 'MiniMax Speech', icon: MinimaxIcon, description: 'Studio-quality TTS', badge: 'TOP', isBrandIcon: true },
+        { label: 'Suno', icon: SunoIcon, description: 'AI music generation', isBrandIcon: true },
+        { label: 'Udio', icon: UdioIcon, description: 'Professional audio', isBrandIcon: true },
       ],
     },
   ],
 };
 
-// Plugins mega menu
 const PLUGINS_MEGA_MENU: MegaMenuData = {
   columns: [
     {
       heading: 'INTEGRATIONS',
       items: [
-        { label: 'Supercomputer', icon: Cpu, description: 'Agents, automation, skills & connectors', badge: 'NEW' },
-        { label: 'MCP & CLI', icon: Terminal, description: 'Turn Claude into a creative engine', badge: 'NEW' },
-        { label: 'Webhooks', icon: Webhook, description: 'Connect to any service with webhooks' },
-        { label: 'API Access', icon: Code2, description: 'Full REST API for developers' },
+        { label: 'Supercomputer', icon: Cpu, description: 'Agents, automation & skills', badge: 'NEW' },
+        { label: 'MCP & CLI', icon: Terminal, description: 'Claude creative engine', badge: 'NEW' },
+        { label: 'Webhooks', icon: Webhook, description: 'Connect any service' },
+        { label: 'API Access', icon: Code2, description: 'Full REST API' },
       ],
     },
     {
-      heading: 'PLUGINS',
+      heading: 'COMING SOON',
       items: [
-        { label: 'Photoshop Plugin', icon: Puzzle, description: 'AI inside Adobe Photoshop', badge: 'SOON' },
-        { label: 'Figma Plugin', icon: Puzzle, description: 'AI inside Figma', badge: 'SOON' },
-        { label: 'Premiere Pro', icon: Puzzle, description: 'AI inside Adobe Premiere', badge: 'SOON' },
+        { label: 'Photoshop', icon: Puzzle, description: 'AI inside Adobe Photoshop', badge: 'SOON' },
+        { label: 'Figma', icon: Puzzle, description: 'AI inside Figma', badge: 'SOON' },
+        { label: 'Premiere Pro', icon: Puzzle, description: 'AI inside Premiere', badge: 'SOON' },
         { label: 'After Effects', icon: Puzzle, description: 'AI inside After Effects', badge: 'SOON' },
-        { label: 'Blender Plugin', icon: Puzzle, description: 'AI inside Blender', badge: 'SOON' },
-        { label: 'VS Code Extension', icon: Code2, description: 'AI in your code editor', badge: 'SOON' },
+        { label: 'Blender', icon: Puzzle, description: 'AI inside Blender', badge: 'SOON' },
+        { label: 'VS Code', icon: Code2, description: 'AI in your editor', badge: 'SOON' },
       ],
     },
   ],
@@ -253,7 +221,7 @@ const MEGA_MENU_MAP: Record<string, MegaMenuData> = {
   Plugins: PLUGINS_MEGA_MENU,
 };
 
-// ─── Nav Items (split into left and right) ──────────────────────────────────
+// ─── Nav Structure ──────────────────────────────────────────────────────────
 
 interface NavItem {
   label: string;
@@ -261,110 +229,90 @@ interface NavItem {
   badge?: BadgeType;
   badgeText?: string;
   separator?: boolean;
-  showGridIcon?: boolean; // 2x2 grid icon before label
+  showGridIcon?: boolean;
 }
 
-const LEFT_NAV_ITEMS: NavItem[] = [
-  { label: 'Explore' },
+const LEFT_NAV: NavItem[] = [
   { label: 'Image', hasMegaMenu: true },
   { label: 'Video', hasMegaMenu: true },
   { label: 'Audio', hasMegaMenu: true },
   { label: 'Supercomputer', badge: 'NEW', separator: true, showGridIcon: true },
   { label: 'MCP & CLI', badge: 'NEW' },
-  { label: 'Colab' },
   { label: 'Plugins', badge: 'SOON', badgeText: 'SOON', hasMegaMenu: true, separator: true },
   { label: 'Marketing Studio', separator: true },
   { label: 'Cinema Studio' },
-  { label: 'AI Influencer' },
   { label: 'Canvas', separator: true },
-  { label: 'Apps' },
 ];
 
-const RIGHT_NAV_ITEMS: NavItem[] = [
-  { label: 'Pricing', badge: 'OFF', badgeText: '30% OFF' },
-];
+// ─── Badge ──────────────────────────────────────────────────────────────────
 
-// ─── Badge Component ────────────────────────────────────────────────────────
-
-function Badge({ type, text }: { type: BadgeType; text?: string }) {
+function NavBadge({ type, text }: { type: BadgeType; text?: string }) {
   if (!type) return null;
-  const classes =
-    type === 'TOP'
-      ? 'bg-[#FF3366] text-white'
-      : type === 'NEW'
-        ? 'bg-[#D7FF00] text-black'
-        : type === 'SOON'
-          ? 'bg-white/10 text-white/70 border border-white/10'
-          : 'bg-[#FF3366] text-white';
+  const style =
+    type === 'TOP' ? 'bg-[#FF3366] text-white' :
+    type === 'NEW' ? 'bg-[#D7FF00] text-black' :
+    type === 'SOON' ? 'bg-white/10 text-white/60 border border-white/10' :
+    'bg-[#FF3366] text-white';
 
   return (
-    <span
-      className={`${classes} text-[9px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}
-    >
+    <span className={`${style} text-[8px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase`}>
       {text || type}
     </span>
   );
 }
 
-// ─── Grid Icon (2x2 dots for Supercomputer) ────────────────────────────────
+// ─── Grid Dots Icon ─────────────────────────────────────────────────────────
 
-function GridDotsIcon({ size = 14 }: { size?: number }) {
+function GridDotsIcon() {
   return (
-    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="shrink-0">
       <rect x="1" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" />
-      <rect x="8" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.7" />
-      <rect x="1" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.7" />
-      <rect x="8" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.4" />
+      <rect x="8" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.6" />
+      <rect x="1" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.6" />
+      <rect x="8" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.3" />
     </svg>
   );
 }
 
-// ─── Mega Menu Item ─────────────────────────────────────────────────────────
+// ─── Mega Menu Components ───────────────────────────────────────────────────
 
 function MegaMenuItemRow({ item }: { item: MegaMenuItem }) {
   const IconComp = item.icon;
   return (
-    <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+    <div className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
       {IconComp && (
-        <div className="flex items-center justify-center w-7 h-7 rounded-md bg-white/5 group-hover:bg-white/10 transition-colors shrink-0">
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/[0.04] group-hover:bg-white/[0.08] transition-colors shrink-0">
           {item.isBrandIcon ? (
-            <IconComp size={14} color="#fff" />
+            <IconComp size={15} color="#fff" />
           ) : (
-            <IconComp className="w-3.5 h-3.5 text-white/70 group-hover:text-[#D7FF00] transition-colors" size={14} />
+            <IconComp className="w-4 h-4 text-white/50 group-hover:text-[#D7FF00] transition-colors" size={15} />
           )}
         </div>
       )}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5">
-          <span className="text-[13px] font-medium text-white group-hover:text-[#D7FF00] transition-colors">
+        <div className="flex items-center gap-2">
+          <span className="text-[13px] font-medium text-white/90 group-hover:text-[#D7FF00] transition-colors">
             {item.label}
           </span>
-          {item.badge && <Badge type={item.badge} />}
+          {item.badge && <NavBadge type={item.badge} />}
         </div>
         {item.description && (
-          <p className="text-[11px] text-white/35 mt-0.5 leading-snug">
-            {item.description}
-          </p>
+          <p className="text-[11px] text-white/30 mt-0.5 leading-snug">{item.description}</p>
         )}
       </div>
     </div>
   );
 }
 
-// ─── Mega Menu Panel ────────────────────────────────────────────────────────
-
 function MegaMenuPanel({ data }: { data: MegaMenuData }) {
   return (
     <div className="flex gap-0">
-      {data.columns.map((col, colIdx) => (
-        <div
-          key={col.heading}
-          className={`flex-1 min-w-0 ${colIdx > 0 ? 'border-l border-white/5 pl-4' : 'pr-4'}`}
-        >
-          <h3 className="text-[10px] font-semibold tracking-widest text-white/30 uppercase mb-2 px-2 font-[family-name:var(--font-space-grotesk)]">
+      {data.columns.map((col, i) => (
+        <div key={col.heading} className={`flex-1 min-w-0 ${i > 0 ? 'border-l border-white/[0.06] pl-5' : 'pr-5'}`}>
+          <h3 className="text-[10px] font-semibold tracking-[0.15em] text-white/25 uppercase mb-2 px-2.5 font-[family-name:var(--font-space-grotesk)]">
             {col.heading}
           </h3>
-          <div className="space-y-px">
+          <div className="space-y-0.5">
             {col.items.map((item) => (
               <MegaMenuItemRow key={item.label} item={item} />
             ))}
@@ -375,58 +323,35 @@ function MegaMenuPanel({ data }: { data: MegaMenuData }) {
   );
 }
 
-// ─── Mobile Accordion Item ──────────────────────────────────────────────────
+// ─── Mobile Menu ────────────────────────────────────────────────────────────
 
-function MobileMegaMenuSection({ label, data, isOpen, onToggle, badge, badgeText }: { label: string; data: MegaMenuData; isOpen: boolean; onToggle: () => void; badge?: BadgeType; badgeText?: string }) {
+function MobileAccordion({ label, data, isOpen, onToggle, badge, badgeText }: {
+  label: string; data: MegaMenuData; isOpen: boolean; onToggle: () => void; badge?: BadgeType; badgeText?: string;
+}) {
   return (
     <div>
-      <button
-        onClick={onToggle}
-        className="flex items-center justify-between w-full py-3 text-sm font-medium text-white hover:text-[#D7FF00] transition-colors"
-      >
+      <button onClick={onToggle} className="flex items-center justify-between w-full py-3 text-sm font-medium text-white/80 hover:text-[#D7FF00] transition-colors">
         <span className="flex items-center gap-2">
           {label}
-          {badge && <Badge type={badge} text={badgeText} />}
+          {badge && <NavBadge type={badge} text={badgeText} />}
         </span>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown className="w-4 h-4" />
         </motion.div>
       </button>
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden">
             {data.columns.map((col) => (
-              <div key={col.heading} className="mb-4">
-                <h4 className="text-[10px] font-semibold tracking-widest text-white/30 uppercase mb-2 px-3 font-[family-name:var(--font-space-grotesk)]">
-                  {col.heading}
-                </h4>
-                <div className="space-y-0.5">
-                  {col.items.map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
-                    >
-                      {item.icon && (
-                        item.isBrandIcon ? (
-                          <item.icon size={14} color="#fff" />
-                        ) : (
-                          <item.icon className="w-4 h-4 text-white/50 shrink-0" size={14} />
-                        )
-                      )}
-                      <span className="text-sm text-white/80">{item.label}</span>
-                      {item.badge && <Badge type={item.badge} />}
-                    </div>
-                  ))}
-                </div>
+              <div key={col.heading} className="mb-3">
+                <h4 className="text-[9px] font-semibold tracking-[0.15em] text-white/25 uppercase mb-1.5 px-3">{col.heading}</h4>
+                {col.items.map((item) => (
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 cursor-pointer">
+                    {item.icon && (item.isBrandIcon ? <item.icon size={14} color="#fff" /> : <item.icon className="w-4 h-4 text-white/40" size={14} />)}
+                    <span className="text-sm text-white/70">{item.label}</span>
+                    {item.badge && <NavBadge type={item.badge} />}
+                  </div>
+                ))}
               </div>
             ))}
           </motion.div>
@@ -443,102 +368,68 @@ export default function Header() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const hoverZoneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setMobileOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const onResize = () => { if (window.innerWidth >= 1024) setMobileOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const handleMobileToggle = useCallback((label: string) => {
+  const toggleMobile = useCallback((label: string) => {
     setMobileExpanded((prev) => (prev === label ? null : label));
   }, []);
 
-  const ALL_NAV_ITEMS = [...LEFT_NAV_ITEMS, ...RIGHT_NAV_ITEMS];
+  const allNavItems = [...LEFT_NAV, { label: 'Pricing', badge: 'OFF' as BadgeType, badgeText: '30% OFF', separator: true }];
 
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-[rgba(10,10,10,0.95)] backdrop-blur-xl border-b border-white/5'
-            : 'bg-transparent'
+          scrolled ? 'bg-[rgba(0,0,0,0.92)] backdrop-blur-2xl border-b border-white/[0.06]' : 'bg-transparent'
         }`}
-        style={{ height: 64 }}
+        style={{ height: 56 }}
       >
-        <div className="flex items-center h-full max-w-[1440px] mx-auto px-4 lg:px-6 relative">
-          {/* Logo Icon */}
-          <div className="flex items-center shrink-0">
-            <Image
-              src="/images/logo-icon.png"
-              alt="AI Creative Studio"
-              width={36}
-              height={36}
-              style={{ width: '36px', height: '36px' }}
-              className="object-contain"
-              priority
-            />
-          </div>
+        <div className="flex items-center h-full max-w-[1440px] mx-auto px-4 lg:px-8">
+          {/* Logo */}
+          <a href="/" className="flex items-center shrink-0 mr-6">
+            <Image src="/images/logo-icon.png" alt="AI Creative Studio" width={32} height={32} className="object-contain" priority />
+          </a>
 
-          {/* Left Navigation */}
-          <div
-            ref={hoverZoneRef}
-            className="hidden lg:flex items-center gap-0.5 ml-4 flex-1 min-w-0"
-            onMouseLeave={() => setActiveMenu(null)}
-          >
-            {LEFT_NAV_ITEMS.map((item) => (
-              <div key={item.label} className="relative flex items-center shrink-0">
-                {item.separator && (
-                  <div className="w-px h-4 bg-white/10 mx-1.5" />
-                )}
+          {/* Desktop Left Nav */}
+          <nav className="hidden lg:flex items-center gap-0.5 flex-1 min-w-0" onMouseLeave={() => setActiveMenu(null)}>
+            {LEFT_NAV.map((item) => (
+              <div key={item.label} className="relative flex items-center">
+                {item.separator && <div className="w-px h-3.5 bg-white/[0.08] mx-2" />}
                 <button
-                  className={`flex items-center gap-1 px-2.5 py-1.5 text-sm text-white hover:text-[#D7FF00] transition-colors rounded-md whitespace-nowrap ${
-                    activeMenu === item.label ? 'text-[#D7FF00]' : ''
+                  className={`flex items-center gap-1.5 px-2 py-1.5 text-[13px] text-white/70 hover:text-white transition-colors rounded-md whitespace-nowrap ${
+                    activeMenu === item.label ? 'text-white' : ''
                   }`}
-                  onMouseEnter={() => {
-                    if (item.hasMegaMenu) {
-                      setActiveMenu(item.label);
-                    } else {
-                      setActiveMenu(null);
-                    }
-                  }}
+                  onMouseEnter={() => setActiveMenu(item.hasMegaMenu ? item.label : null)}
                 >
-                  {item.showGridIcon && <GridDotsIcon size={12} />}
-                  {item.label}
+                  {item.showGridIcon && <GridDotsIcon />}
+                  <span>{item.label}</span>
                   {item.hasMegaMenu && (
-                    <ChevronDown
-                      className={`w-3 h-3 transition-transform duration-200 ${
-                        activeMenu === item.label ? 'rotate-180' : ''
-                      }`}
-                    />
+                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeMenu === item.label ? 'rotate-180' : ''}`} />
                   )}
-                  {item.badge && <Badge type={item.badge} text={item.badgeText} />}
+                  {item.badge && <NavBadge type={item.badge} text={item.badgeText} />}
                 </button>
 
-                {/* Mega Menu Dropdown */}
                 <AnimatePresence>
                   {item.hasMegaMenu && activeMenu === item.label && MEGA_MENU_MAP[item.label] && (
                     <motion.div
-                      initial={{ opacity: 0, y: -4 }}
+                      initial={{ opacity: 0, y: -2 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15, ease: 'easeOut' }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
+                      exit={{ opacity: 0, y: -2 }}
+                      transition={{ duration: 0.12, ease: 'easeOut' }}
+                      className="absolute top-full left-0 pt-2 z-50"
                     >
-                      <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-4 w-[720px] max-h-[50vh] overflow-y-auto mega-menu-scroll">
+                      <div className="bg-[rgba(8,8,8,0.98)] backdrop-blur-3xl rounded-xl border border-white/[0.06] shadow-2xl shadow-black/60 p-5 w-[680px] max-h-[55vh] overflow-y-auto mega-menu-scroll">
                         <MegaMenuPanel data={MEGA_MENU_MAP[item.label]} />
                       </div>
                     </motion.div>
@@ -546,112 +437,71 @@ export default function Header() {
                 </AnimatePresence>
               </div>
             ))}
-          </div>
+          </nav>
 
-          {/* Right Side: Pricing + Login + Signup */}
-          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
-            {/* Pricing nav item */}
-            {RIGHT_NAV_ITEMS.map((item) => (
-              <button
-                key={item.label}
-                className="flex items-center gap-1 px-2.5 py-1.5 text-sm text-white hover:text-[#D7FF00] transition-colors rounded-md whitespace-nowrap"
-              >
-                {item.label}
-                {item.badge && <Badge type={item.badge} text={item.badgeText} />}
-              </button>
-            ))}
-            <div className="w-px h-4 bg-white/10 mx-1" />
-            <button className="text-sm text-white hover:text-[#D7FF00] transition-colors">
+          {/* Desktop Right: Pricing + Actions */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
+            <button className="flex items-center gap-1.5 px-2 py-1.5 text-[13px] text-white/70 hover:text-white transition-colors rounded-md whitespace-nowrap">
+              Pricing
+              <NavBadge type="OFF" text="30% OFF" />
+            </button>
+            <div className="w-px h-3.5 bg-white/[0.08] mx-1" />
+            <button className="text-[13px] text-white/60 hover:text-white transition-colors px-2 py-1.5">
               Login
             </button>
-            <button className="bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
+            <button className="bg-[#D7FF00] text-black text-[13px] font-semibold px-4 py-1.5 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap ml-1">
               Sign Up
             </button>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex items-center gap-3 lg:hidden ml-auto">
-            <button className="bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
-              Sign Up
-            </button>
-            <button
-              className="text-white p-1.5 hover:bg-white/5 rounded-md transition-colors"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
-            >
+          {/* Mobile Actions */}
+          <div className="flex items-center gap-2 lg:hidden ml-auto">
+            <button className="bg-[#D7FF00] text-black text-[13px] font-semibold px-3.5 py-1.5 rounded-lg">Sign Up</button>
+            <button className="text-white p-1.5 hover:bg-white/5 rounded-md" onClick={() => setMobileOpen(true)} aria-label="Menu">
               <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Backdrop when mega menu is open */}
+      {/* Backdrop */}
       <AnimatePresence>
         {activeMenu && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 top-16 z-30 bg-black/40 backdrop-blur-sm"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }}
+            className="fixed inset-0 top-14 z-30 bg-black/50 backdrop-blur-sm"
             onMouseEnter={() => setActiveMenu(null)}
           />
         )}
       </AnimatePresence>
 
-      {/* Mobile Sheet Menu */}
+      {/* Mobile Sheet */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent
-          side="left"
-          className="bg-[#0A0A0A] border-white/5 text-white w-[320px] sm:w-[380px] p-0"
-        >
-          <SheetHeader className="p-4 border-b border-white/5">
+        <SheetContent side="left" className="bg-[#0A0A0A] border-white/[0.06] text-white w-[300px] sm:w-[340px] p-0">
+          <SheetHeader className="p-4 border-b border-white/[0.06]">
             <SheetTitle className="flex items-center gap-2.5 text-white">
-              <Image
-                src="/images/logo-icon.png"
-                alt="AI Creative Studio"
-                width={28}
-                height={28}
-                style={{ width: '28px', height: '28px' }}
-                className="object-contain"
-              />
+              <Image src="/images/logo-icon.png" alt="AI Creative Studio" width={24} height={24} className="object-contain" />
             </SheetTitle>
           </SheetHeader>
-
           <div className="flex-1 overflow-y-auto mega-menu-scroll p-4 space-y-0.5">
-            {ALL_NAV_ITEMS.map((item) =>
+            {allNavItems.map((item) =>
               item.hasMegaMenu && MEGA_MENU_MAP[item.label] ? (
-                <MobileMegaMenuSection
-                  key={item.label}
-                  label={item.label}
-                  data={MEGA_MENU_MAP[item.label]}
-                  isOpen={mobileExpanded === item.label}
-                  onToggle={() => handleMobileToggle(item.label)}
-                  badge={item.badge}
-                  badgeText={item.badgeText}
+                <MobileAccordion
+                  key={item.label} label={item.label} data={MEGA_MENU_MAP[item.label]}
+                  isOpen={mobileExpanded === item.label} onToggle={() => toggleMobile(item.label)}
+                  badge={item.badge} badgeText={item.badgeText}
                 />
               ) : (
-                <div
-                  key={item.label}
-                  className="flex items-center justify-between py-3 px-0"
-                >
-                  <span className="text-sm font-medium text-white hover:text-[#D7FF00] transition-colors cursor-pointer flex items-center gap-1.5">
-                    {item.showGridIcon && <GridDotsIcon size={12} />}
-                    {item.label}
-                  </span>
-                  {item.badge && <Badge type={item.badge} text={item.badgeText} />}
+                <div key={item.label} className="flex items-center justify-between py-3">
+                  <span className="text-sm font-medium text-white/80">{item.label}</span>
+                  {item.badge && <NavBadge type={item.badge} text={item.badgeText} />}
                 </div>
               )
             )}
           </div>
-
-          <div className="border-t border-white/5 p-4 space-y-3">
-            <button className="w-full text-sm text-white hover:text-[#D7FF00] transition-colors py-2.5 text-left">
-              Login
-            </button>
-            <button className="w-full bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-[#c5ee00] transition-colors">
-              Sign Up
-            </button>
+          <div className="border-t border-white/[0.06] p-4 space-y-2.5">
+            <button className="w-full text-sm text-white/70 py-2.5 text-left hover:text-white">Login</button>
+            <button className="w-full bg-[#D7FF00] text-black text-sm font-semibold py-2.5 rounded-lg">Sign Up</button>
           </div>
         </SheetContent>
       </Sheet>
