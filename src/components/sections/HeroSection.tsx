@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Cpu, Wrench, Infinity, Play } from 'lucide-react';
@@ -35,38 +35,6 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
   );
 }
 
-// ─── Particle Component ──────────────────────────────────────────────────────
-
-function Particles() {
-  const particles = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    size: Math.random() * 3 + 1,
-    delay: Math.random() * 5,
-    duration: Math.random() * 3 + 4,
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="absolute rounded-full bg-white/20 hero-particle"
-          style={{
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            animationDelay: `${p.delay}s`,
-            animationDuration: `${p.duration}s`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 // ─── Animation Variants ──────────────────────────────────────────────────────
 
 const containerVariants = {
@@ -89,15 +57,6 @@ const fadeInUp = {
   },
 };
 
-const fadeInRight = {
-  hidden: { opacity: 0, x: 60 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.8, ease: [0.25, 0.4, 0.25, 1], delay: 0.4 },
-  },
-};
-
 // ─── Stats Data ──────────────────────────────────────────────────────────────
 
 const stats = [
@@ -109,8 +68,34 @@ const stats = [
 // ─── Hero Section ────────────────────────────────────────────────────────────
 
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay may be blocked, that's fine
+      });
+    }
+  }, []);
+
   return (
     <section className="relative w-full h-screen min-h-[700px] bg-[#000000] overflow-hidden flex items-center">
+      {/* ── Video Background ── */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ filter: 'brightness(0.4)' }}
+      >
+        <source src="/images/hero-video.mp4" type="video/mp4" />
+      </video>
+
+      {/* ── Dark overlay on top of video ── */}
+      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+
       {/* ── Grid Pattern Overlay ── */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -122,18 +107,17 @@ export default function HeroSection() {
       />
 
       {/* ── Dark Gradient Overlay (bottom to top) ── */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/90 via-black/30 to-black/50" />
 
       {/* ── Radial Glow (left) ── */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none">
-        <div className="w-full h-full bg-[radial-gradient(circle,rgba(215,255,0,0.04)_0%,transparent_70%)]" />
+        <div className="w-full h-full bg-[radial-gradient(circle,rgba(215,255,0,0.06)_0%,transparent_70%)]" />
       </div>
 
       {/* ── Content ── */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-8 md:gap-12 lg:gap-16 pt-20 md:pt-0">
-        {/* ── Left Column ── */}
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="flex-1 min-w-0 flex flex-col items-start"
+          className="max-w-2xl"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -157,7 +141,7 @@ export default function HeroSection() {
 
           {/* Description */}
           <motion.p
-            className="text-[#5C5C5C] text-lg mt-6 max-w-md leading-relaxed font-[family-name:var(--font-inter)]"
+            className="text-[#EAEAEA] text-lg mt-6 max-w-md leading-relaxed font-[family-name:var(--font-inter)]"
             variants={fadeInUp}
           >
             Generate images, videos, audio, campaigns and content using the
@@ -181,8 +165,8 @@ export default function HeroSection() {
               const IconComp = stat.icon;
               return (
                 <div key={stat.label} className="flex items-center gap-2">
-                  <IconComp className="w-4 h-4 text-[#5C5C5C]" />
-                  <span className="text-sm text-[#5C5C5C] font-[family-name:var(--font-inter)]">
+                  <IconComp className="w-4 h-4 text-[#D7FF00]/60" />
+                  <span className="text-sm text-white/60 font-[family-name:var(--font-inter)]">
                     {stat.labelPrefix || ''}
                     {stat.value ? (
                       <AnimatedCounter target={stat.value} suffix={stat.suffix} />
@@ -195,54 +179,6 @@ export default function HeroSection() {
               );
             })}
           </motion.div>
-        </motion.div>
-
-        {/* ── Right Column ── */}
-        <motion.div
-          className="flex-1 min-w-0 relative w-full md:w-auto flex items-center justify-center"
-          variants={fadeInRight}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="relative w-full max-w-[580px] aspect-square">
-            {/* Radial gradient overlays for depth */}
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_40%,rgba(215,255,0,0.06)_0%,transparent_50%)] pointer-events-none z-10" />
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_70%_60%,rgba(215,255,0,0.04)_0%,transparent_50%)] pointer-events-none z-10" />
-
-            {/* Particles */}
-            <Particles />
-
-            {/* Hero Scene Image */}
-            <div className="relative w-full h-full">
-              <Image
-                src="/images/hero-scene.png"
-                alt="AI Creative Studio - Cinematic Scene"
-                fill
-                className="object-contain drop-shadow-2xl"
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-
-            {/* Floating Logo Icon with Glow */}
-            <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-              <div className="animate-float">
-                <div className="relative">
-                  {/* Glow ring */}
-                  <div className="absolute inset-0 -m-4 rounded-full bg-[radial-gradient(circle,rgba(215,255,0,0.2)_0%,transparent_70%)] animate-pulse-glow" />
-                  <Image
-                    src="/images/logo-icon.png"
-                    alt="AI Creative Studio"
-                    width={80}
-                    height={80}
-                    style={{ width: 'auto', height: '80px' }}
-                    className="relative z-10 object-contain drop-shadow-[0_0_30px_rgba(215,255,0,0.3)]"
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </motion.div>
       </div>
 

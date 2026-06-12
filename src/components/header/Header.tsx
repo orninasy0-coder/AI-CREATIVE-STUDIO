@@ -31,6 +31,16 @@ import {
   Languages,
   Menu,
   ChevronDown,
+  Terminal,
+  Puzzle,
+  Globe,
+  Cpu,
+  Hexagon,
+  Zap,
+  Diamond,
+  Star,
+  Circle,
+  Volume2,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -85,21 +95,21 @@ const IMAGE_MEGA_MENU: MegaMenuData = {
     {
       heading: 'MODELS',
       items: [
-        { label: 'GPT Image 2', description: '4K images with near-perfect text rendering', badge: 'NEW' },
-        { label: 'GPT Image 1.5', description: 'True-color precision rendering' },
-        { label: 'Flux', description: 'State-of-the-art image generation', badge: 'TOP' },
-        { label: 'Reve', description: 'Advanced image editing model' },
-        { label: 'Seedream Lite', description: 'Intelligent visual reasoning' },
-        { label: 'Seedream', description: 'Professional image generation' },
-        { label: 'Nano Banana', description: 'Pro quality at flash speed', badge: 'NEW' },
-        { label: 'Nano Banana Pro', description: 'Best 4K image model ever', badge: 'TOP' },
-        { label: 'Topaz', description: 'High-resolution upscaler' },
-        { label: 'Recraft', description: 'Photorealistic and expressive generation', badge: 'NEW' },
-        { label: 'Z-Image', description: 'Instant lifelike portraits' },
-        { label: 'Grok Imagine', description: 'Versatile image styles by xAI' },
-        { label: 'Soul Cinema', description: 'Cinematic stills from your imagination' },
-        { label: 'Soul 2.0', description: 'Next gen soul model' },
-        { label: 'Popcorn', description: 'Storyboard, edit, create' },
+        { label: 'GPT Image 2', icon: Hexagon, description: '4K images with near-perfect text rendering', badge: 'NEW' },
+        { label: 'GPT Image 1.5', icon: Hexagon, description: 'True-color precision rendering' },
+        { label: 'Flux', icon: Zap, description: 'State-of-the-art image generation', badge: 'TOP' },
+        { label: 'Reve', icon: Diamond, description: 'Advanced image editing model' },
+        { label: 'Seedream Lite', icon: Star, description: 'Intelligent visual reasoning' },
+        { label: 'Seedream', icon: Star, description: 'Professional image generation' },
+        { label: 'Nano Banana', icon: Circle, description: 'Pro quality at flash speed', badge: 'NEW' },
+        { label: 'Nano Banana Pro', icon: Circle, description: 'Best 4K image model ever', badge: 'TOP' },
+        { label: 'Topaz', icon: Diamond, description: 'High-resolution upscaler' },
+        { label: 'Recraft', icon: Paintbrush, description: 'Photorealistic and expressive generation', badge: 'NEW' },
+        { label: 'Z-Image', icon: Star, description: 'Instant lifelike portraits' },
+        { label: 'Grok Imagine', icon: Cpu, description: 'Versatile image styles by xAI' },
+        { label: 'Soul Cinema', icon: Film, description: 'Cinematic stills from your imagination' },
+        { label: 'Soul 2.0', icon: Sparkles, description: 'Next gen soul model' },
+        { label: 'Popcorn', icon: Play, description: 'Storyboard, edit, create' },
       ],
     },
   ],
@@ -129,19 +139,19 @@ const VIDEO_MEGA_MENU: MegaMenuData = {
     {
       heading: 'MODELS',
       items: [
-        { label: 'Seedance 2.0', description: 'Most advanced AI video model', badge: 'TOP' },
-        { label: 'Kling 3.0', description: 'Cinematic videos with audio', badge: 'TOP' },
-        { label: 'Kling Motion Control', description: 'Transfer motion from video to image' },
-        { label: 'Kling Edit', description: 'Advanced video editing' },
-        { label: 'Sora 2', description: "OpenAI's most advanced video model", badge: 'TOP' },
-        { label: 'Google Veo 3.1 Lite', description: 'Fast video generation by Google', badge: 'NEW' },
-        { label: 'Google Veo 3.1', description: 'Advanced AI video with sound', badge: 'TOP' },
-        { label: 'HappyHorse', description: "Alibaba's #1 ranked video and audio model" },
-        { label: 'Grok Imagine Video', description: 'Cinematic videos with synchronized audio', badge: 'NEW' },
-        { label: 'Wan 2.7', description: 'AI video with first and last frame control', badge: 'NEW' },
-        { label: 'Minimax Hailuo', description: 'Fastest high-dynamic video' },
-        { label: 'Seedance Pro', description: 'Pro-grade audio-visual sync' },
-        { label: 'AI DOP', description: 'VFX and camera control' },
+        { label: 'Seedance 2.0', icon: Star, description: 'Most advanced AI video model', badge: 'TOP' },
+        { label: 'Kling 3.0', icon: Film, description: 'Cinematic videos with audio', badge: 'TOP' },
+        { label: 'Kling Motion Control', icon: Film, description: 'Transfer motion from video to image' },
+        { label: 'Kling Edit', icon: Scissors, description: 'Advanced video editing' },
+        { label: 'Sora 2', icon: Hexagon, description: "OpenAI's most advanced video model", badge: 'TOP' },
+        { label: 'Google Veo 3.1 Lite', icon: Cpu, description: 'Fast video generation by Google', badge: 'NEW' },
+        { label: 'Google Veo 3.1', icon: Cpu, description: 'Advanced AI video with sound', badge: 'TOP' },
+        { label: 'HappyHorse', icon: Zap, description: "Alibaba's #1 ranked video and audio model" },
+        { label: 'Grok Imagine Video', icon: Cpu, description: 'Cinematic videos with synchronized audio', badge: 'NEW' },
+        { label: 'Wan 2.7', icon: Globe, description: 'AI video with first and last frame control', badge: 'NEW' },
+        { label: 'Minimax Hailuo', icon: Diamond, description: 'Fastest high-dynamic video' },
+        { label: 'Seedance Pro', icon: Star, description: 'Pro-grade audio-visual sync' },
+        { label: 'AI DOP', icon: Camera, description: 'VFX and camera control' },
       ],
     },
   ],
@@ -160,10 +170,10 @@ const AUDIO_MEGA_MENU: MegaMenuData = {
     {
       heading: 'MODELS',
       items: [
-        { label: 'Eleven v3', description: 'Expressive AI voice with emotion control', badge: 'TOP' },
-        { label: 'MiniMax Speech 2.8', description: 'Studio-quality text-to-speech', badge: 'TOP' },
-        { label: 'Seed Speech', description: 'ByteDance multilingual text-to-speech', badge: 'NEW' },
-        { label: 'VibeVoice', description: 'Long-form expressive voice synthesis', badge: 'NEW' },
+        { label: 'Eleven v3', icon: Mic, description: 'Expressive AI voice with emotion control', badge: 'TOP' },
+        { label: 'MiniMax Speech 2.8', icon: Volume2, description: 'Studio-quality text-to-speech', badge: 'TOP' },
+        { label: 'Seed Speech', icon: Languages, description: 'ByteDance multilingual text-to-speech', badge: 'NEW' },
+        { label: 'VibeVoice', icon: Sparkles, description: 'Long-form expressive voice synthesis', badge: 'NEW' },
       ],
     },
   ],
@@ -187,8 +197,9 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Video', hasMegaMenu: true },
   { label: 'Audio', hasMegaMenu: true },
   { label: 'Supercomputer', badge: 'NEW' },
-  { label: 'Models' },
-  { label: 'Tools' },
+  { label: 'MCP & CLI', badge: 'NEW' },
+  { label: 'Colab' },
+  { label: 'Plugins', badge: 'NEW' },
   { label: 'Marketing Studio' },
   { label: 'Cinema Studio' },
   { label: 'AI Influencer' },
@@ -389,18 +400,16 @@ export default function Header() {
       >
         <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-4 lg:px-6">
           {/* Logo */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center shrink-0">
             <Image
-              src="/images/logo.png"
+              src="/images/logo-text.png"
               alt="AI Creative Studio"
-              width={32}
-              height={32}
-              style={{ width: 'auto', height: '32px' }}
+              width={180}
+              height={36}
+              style={{ width: 'auto', height: '36px' }}
               className="object-contain"
+              priority
             />
-            <span className="text-sm font-semibold tracking-wide text-white font-[family-name:var(--font-space-grotesk)] hidden sm:inline">
-              AI CREATIVE STUDIO
-            </span>
           </div>
 
           {/* Desktop Navigation */}
@@ -445,7 +454,7 @@ export default function Header() {
               Login
             </button>
             <button className="bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
-              Get Started
+              Sign Up
             </button>
             <button
               className="lg:hidden text-white p-1.5 hover:bg-white/5 rounded-md transition-colors"
@@ -471,8 +480,8 @@ export default function Header() {
             onMouseEnter={cancelCloseMegaMenu}
             onMouseLeave={closeMegaMenu}
           >
-            <div className="max-w-[1440px] mx-auto px-4 lg:px-6">
-              <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-6">
+            <div className="max-w-[900px] mx-auto px-4 lg:px-6">
+              <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-5 max-h-[70vh] overflow-y-auto mega-menu-scroll">
                 <MegaMenuPanel data={MEGA_MENU_MAP[activeMenu]} />
               </div>
             </div>
@@ -503,16 +512,13 @@ export default function Header() {
           <SheetHeader className="p-4 border-b border-white/5">
             <SheetTitle className="flex items-center gap-2.5 text-white">
               <Image
-                src="/images/logo.png"
+                src="/images/logo-text.png"
                 alt="AI Creative Studio"
-                width={28}
+                width={140}
                 height={28}
                 style={{ width: 'auto', height: '28px' }}
                 className="object-contain"
               />
-              <span className="text-sm font-semibold tracking-wide font-[family-name:var(--font-space-grotesk)]">
-                AI CREATIVE STUDIO
-              </span>
             </SheetTitle>
           </SheetHeader>
 
@@ -545,7 +551,7 @@ export default function Header() {
               Login
             </button>
             <button className="w-full bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-[#c5ee00] transition-colors">
-              Get Started
+              Sign Up
             </button>
           </div>
         </SheetContent>
