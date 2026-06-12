@@ -78,7 +78,7 @@ export default function TrustedModelsBar() {
       className="w-full bg-[#000000] py-2 overflow-hidden"
     >
       <motion.div
-        className="max-w-[1400px] mx-auto"
+        className="max-w-[1400px] mx-auto flex justify-center"
         initial={{ opacity: 0, y: 10 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
         transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}

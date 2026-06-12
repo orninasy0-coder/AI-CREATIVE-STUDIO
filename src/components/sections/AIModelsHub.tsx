@@ -11,6 +11,7 @@ import {
   KlingIcon,
   GrokIcon,
   DeepMindIcon,
+  RunwayIcon,
 } from '@/components/icons/BrandIcons';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -69,6 +70,13 @@ const features: FeatureCard[] = [
     description: 'Generate stunning media with AI canvas',
     badge: 'NEW',
     LucideIcon: Atom,
+  },
+  {
+    title: 'Kling 3.0',
+    description: 'Cinematic videos with synchronized audio',
+    category: 'Video',
+    badge: 'TRENDING',
+    Icon: KlingIcon,
   },
   {
     title: 'Cinema Studio 3.5',

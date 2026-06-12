@@ -36,6 +36,13 @@ import {
   Headphones,
   Speaker,
   AudioLines,
+  Plug,
+  Cpu,
+  Terminal,
+  Webhook,
+  Puzzle,
+  Code2,
+  Zap,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -77,7 +84,7 @@ import {
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
-type BadgeType = 'TOP' | 'NEW' | 'OFF' | null;
+type BadgeType = 'TOP' | 'NEW' | 'OFF' | 'SOON' | null;
 
 // Icon can be either a Lucide icon or a brand icon
 type IconComponent = LucideIcon | ComponentType<{ size?: number | string; color?: string; className?: string; style?: React.CSSProperties }>;
@@ -87,7 +94,7 @@ interface MegaMenuItem {
   icon?: IconComponent;
   description?: string;
   badge?: BadgeType;
-  isBrandIcon?: boolean; // true = lobehub brand icon (renders differently)
+  isBrandIcon?: boolean;
 }
 
 interface MegaMenuColumn {
@@ -213,35 +220,68 @@ const AUDIO_MEGA_MENU: MegaMenuData = {
   ],
 };
 
+// Plugins mega menu
+const PLUGINS_MEGA_MENU: MegaMenuData = {
+  columns: [
+    {
+      heading: 'INTEGRATIONS',
+      items: [
+        { label: 'Supercomputer', icon: Cpu, description: 'Agents, automation, skills & connectors', badge: 'NEW' },
+        { label: 'MCP & CLI', icon: Terminal, description: 'Turn Claude into a creative engine', badge: 'NEW' },
+        { label: 'Webhooks', icon: Webhook, description: 'Connect to any service with webhooks' },
+        { label: 'API Access', icon: Code2, description: 'Full REST API for developers' },
+      ],
+    },
+    {
+      heading: 'PLUGINS',
+      items: [
+        { label: 'Photoshop Plugin', icon: Puzzle, description: 'AI inside Adobe Photoshop', badge: 'SOON' },
+        { label: 'Figma Plugin', icon: Puzzle, description: 'AI inside Figma', badge: 'SOON' },
+        { label: 'Premiere Pro', icon: Puzzle, description: 'AI inside Adobe Premiere', badge: 'SOON' },
+        { label: 'After Effects', icon: Puzzle, description: 'AI inside After Effects', badge: 'SOON' },
+        { label: 'Blender Plugin', icon: Puzzle, description: 'AI inside Blender', badge: 'SOON' },
+        { label: 'VS Code Extension', icon: Code2, description: 'AI in your code editor', badge: 'SOON' },
+      ],
+    },
+  ],
+};
+
 const MEGA_MENU_MAP: Record<string, MegaMenuData> = {
   Image: IMAGE_MEGA_MENU,
   Video: VIDEO_MEGA_MENU,
   Audio: AUDIO_MEGA_MENU,
+  Plugins: PLUGINS_MEGA_MENU,
 };
+
+// ─── Nav Items (split into left and right) ──────────────────────────────────
 
 interface NavItem {
   label: string;
   hasMegaMenu?: boolean;
   badge?: BadgeType;
-  badgeText?: string; // Custom badge text override
-  separator?: boolean; // Show vertical divider before this item
+  badgeText?: string;
+  separator?: boolean;
+  showGridIcon?: boolean; // 2x2 grid icon before label
 }
 
-const NAV_ITEMS: NavItem[] = [
+const LEFT_NAV_ITEMS: NavItem[] = [
   { label: 'Explore' },
   { label: 'Image', hasMegaMenu: true },
   { label: 'Video', hasMegaMenu: true },
   { label: 'Audio', hasMegaMenu: true },
-  { label: 'Supercomputer', badge: 'NEW', separator: true },
+  { label: 'Supercomputer', badge: 'NEW', separator: true, showGridIcon: true },
   { label: 'MCP & CLI', badge: 'NEW' },
   { label: 'Colab' },
-  { label: 'Plugins', badge: 'NEW' },
+  { label: 'Plugins', badge: 'SOON', badgeText: 'SOON', hasMegaMenu: true, separator: true },
   { label: 'Marketing Studio', separator: true },
   { label: 'Cinema Studio' },
   { label: 'AI Influencer' },
   { label: 'Canvas', separator: true },
   { label: 'Apps' },
-  { label: 'Pricing', badge: 'OFF', badgeText: '30% OFF', separator: true },
+];
+
+const RIGHT_NAV_ITEMS: NavItem[] = [
+  { label: 'Pricing', badge: 'OFF', badgeText: '30% OFF' },
 ];
 
 // ─── Badge Component ────────────────────────────────────────────────────────
@@ -253,7 +293,9 @@ function Badge({ type, text }: { type: BadgeType; text?: string }) {
       ? 'bg-[#FF3366] text-white'
       : type === 'NEW'
         ? 'bg-[#D7FF00] text-black'
-        : 'bg-[#FF3366] text-white';
+        : type === 'SOON'
+          ? 'bg-white/10 text-white/70 border border-white/10'
+          : 'bg-[#FF3366] text-white';
 
   return (
     <span
@@ -261,6 +303,19 @@ function Badge({ type, text }: { type: BadgeType; text?: string }) {
     >
       {text || type}
     </span>
+  );
+}
+
+// ─── Grid Icon (2x2 dots for Supercomputer) ────────────────────────────────
+
+function GridDotsIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" />
+      <rect x="8" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.7" />
+      <rect x="1" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.7" />
+      <rect x="8" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.4" />
+    </svg>
   );
 }
 
@@ -322,14 +377,17 @@ function MegaMenuPanel({ data }: { data: MegaMenuData }) {
 
 // ─── Mobile Accordion Item ──────────────────────────────────────────────────
 
-function MobileMegaMenuSection({ label, data, isOpen, onToggle }: { label: string; data: MegaMenuData; isOpen: boolean; onToggle: () => void }) {
+function MobileMegaMenuSection({ label, data, isOpen, onToggle, badge, badgeText }: { label: string; data: MegaMenuData; isOpen: boolean; onToggle: () => void; badge?: BadgeType; badgeText?: string }) {
   return (
     <div>
       <button
         onClick={onToggle}
         className="flex items-center justify-between w-full py-3 text-sm font-medium text-white hover:text-[#D7FF00] transition-colors"
       >
-        {label}
+        <span className="flex items-center gap-2">
+          {label}
+          {badge && <Badge type={badge} text={badgeText} />}
+        </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -409,6 +467,8 @@ export default function Header() {
     setMobileExpanded((prev) => (prev === label ? null : label));
   }, []);
 
+  const ALL_NAV_ITEMS = [...LEFT_NAV_ITEMS, ...RIGHT_NAV_ITEMS];
+
   return (
     <>
       <header
@@ -419,7 +479,7 @@ export default function Header() {
         }`}
         style={{ height: 64 }}
       >
-        <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-4 lg:px-6 relative">
+        <div className="flex items-center h-full max-w-[1440px] mx-auto px-4 lg:px-6 relative">
           {/* Logo Icon */}
           <div className="flex items-center shrink-0">
             <Image
@@ -433,14 +493,14 @@ export default function Header() {
             />
           </div>
 
-          {/* Desktop Navigation + Mega Menu Hover Zone */}
+          {/* Left Navigation */}
           <div
             ref={hoverZoneRef}
-            className="hidden lg:flex items-center gap-0.5 flex-1 justify-start ml-4"
+            className="hidden lg:flex items-center gap-0.5 ml-4 flex-1 min-w-0"
             onMouseLeave={() => setActiveMenu(null)}
           >
-            {NAV_ITEMS.map((item) => (
-              <div key={item.label} className="relative flex items-center">
+            {LEFT_NAV_ITEMS.map((item) => (
+              <div key={item.label} className="relative flex items-center shrink-0">
                 {item.separator && (
                   <div className="w-px h-4 bg-white/10 mx-1.5" />
                 )}
@@ -456,6 +516,7 @@ export default function Header() {
                     }
                   }}
                 >
+                  {item.showGridIcon && <GridDotsIcon size={12} />}
                   {item.label}
                   {item.hasMegaMenu && (
                     <ChevronDown
@@ -467,7 +528,7 @@ export default function Header() {
                   {item.badge && <Badge type={item.badge} text={item.badgeText} />}
                 </button>
 
-                {/* Mega Menu Dropdown - inside each nav item */}
+                {/* Mega Menu Dropdown */}
                 <AnimatePresence>
                   {item.hasMegaMenu && activeMenu === item.label && MEGA_MENU_MAP[item.label] && (
                     <motion.div
@@ -487,58 +548,39 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Right Side Actions */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button className="text-sm text-white hover:text-[#D7FF00] transition-colors hidden sm:block">
+          {/* Right Side: Pricing + Login + Signup */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
+            {/* Pricing nav item */}
+            {RIGHT_NAV_ITEMS.map((item) => (
+              <button
+                key={item.label}
+                className="flex items-center gap-1 px-2.5 py-1.5 text-sm text-white hover:text-[#D7FF00] transition-colors rounded-md whitespace-nowrap"
+              >
+                {item.label}
+                {item.badge && <Badge type={item.badge} text={item.badgeText} />}
+              </button>
+            ))}
+            <div className="w-px h-4 bg-white/10 mx-1" />
+            <button className="text-sm text-white hover:text-[#D7FF00] transition-colors">
               Login
             </button>
             <button className="bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
               Sign Up
             </button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="flex items-center gap-3 lg:hidden ml-auto">
+            <button className="bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
+              Sign Up
+            </button>
             <button
-              className="lg:hidden text-white p-1.5 hover:bg-white/5 rounded-md transition-colors"
+              className="text-white p-1.5 hover:bg-white/5 rounded-md transition-colors"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5" />
             </button>
-          </div>
-
-          {/* Animated Right Background */}
-          <div className="absolute right-0 top-0 h-full w-[300px] pointer-events-none overflow-hidden opacity-30">
-            <div className="absolute inset-0 bg-gradient-to-l from-[#D7FF00]/10 via-transparent to-transparent" />
-            <motion.div
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-[200px] h-[200px] rounded-full"
-              style={{
-                background: 'radial-gradient(circle, rgba(215,255,0,0.15) 0%, transparent 70%)',
-              }}
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.4, 0.7, 0.4],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-            <motion.div
-              className="absolute right-10 top-1/2 -translate-y-1/2 w-[100px] h-[100px] rounded-full"
-              style={{
-                background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
-              }}
-              animate={{
-                scale: [1, 1.4, 1],
-                opacity: [0.3, 0.6, 0.3],
-                x: [0, -10, 0],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: 1,
-              }}
-            />
           </div>
         </div>
       </header>
@@ -577,7 +619,7 @@ export default function Header() {
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto mega-menu-scroll p-4 space-y-0.5">
-            {NAV_ITEMS.map((item) =>
+            {ALL_NAV_ITEMS.map((item) =>
               item.hasMegaMenu && MEGA_MENU_MAP[item.label] ? (
                 <MobileMegaMenuSection
                   key={item.label}
@@ -585,13 +627,16 @@ export default function Header() {
                   data={MEGA_MENU_MAP[item.label]}
                   isOpen={mobileExpanded === item.label}
                   onToggle={() => handleMobileToggle(item.label)}
+                  badge={item.badge}
+                  badgeText={item.badgeText}
                 />
               ) : (
                 <div
                   key={item.label}
                   className="flex items-center justify-between py-3 px-0"
                 >
-                  <span className="text-sm font-medium text-white hover:text-[#D7FF00] transition-colors cursor-pointer">
+                  <span className="text-sm font-medium text-white hover:text-[#D7FF00] transition-colors cursor-pointer flex items-center gap-1.5">
+                    {item.showGridIcon && <GridDotsIcon size={12} />}
                     {item.label}
                   </span>
                   {item.badge && <Badge type={item.badge} text={item.badgeText} />}
