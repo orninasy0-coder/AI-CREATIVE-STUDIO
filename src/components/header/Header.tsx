@@ -243,21 +243,21 @@ function Badge({ type }: { type: BadgeType }) {
 function MegaMenuItemRow({ item }: { item: MegaMenuItem }) {
   const IconComp = item.icon;
   return (
-    <div className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+    <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
       {IconComp && (
-        <div className="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 group-hover:bg-white/10 transition-colors shrink-0 mt-0.5">
-          <IconComp className="w-4 h-4 text-white/70 group-hover:text-[#D7FF00] transition-colors" />
+        <div className="flex items-center justify-center w-7 h-7 rounded-md bg-white/5 group-hover:bg-white/10 transition-colors shrink-0">
+          <IconComp className="w-3.5 h-3.5 text-white/70 group-hover:text-[#D7FF00] transition-colors" />
         </div>
       )}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-white group-hover:text-[#D7FF00] transition-colors">
+        <div className="flex items-center gap-1.5">
+          <span className="text-[13px] font-medium text-white group-hover:text-[#D7FF00] transition-colors">
             {item.label}
           </span>
           {item.badge && <Badge type={item.badge} />}
         </div>
         {item.description && (
-          <p className="text-xs text-white/40 mt-0.5 leading-relaxed">
+          <p className="text-[11px] text-white/35 mt-0.5 leading-snug">
             {item.description}
           </p>
         )}
@@ -274,12 +274,12 @@ function MegaMenuPanel({ data }: { data: MegaMenuData }) {
       {data.columns.map((col, colIdx) => (
         <div
           key={col.heading}
-          className={`flex-1 min-w-0 ${colIdx > 0 ? 'border-l border-white/5 pl-6' : 'pr-6'}`}
+          className={`flex-1 min-w-0 ${colIdx > 0 ? 'border-l border-white/5 pl-4' : 'pr-4'}`}
         >
-          <h3 className="text-[11px] font-semibold tracking-widest text-white/30 uppercase mb-3 px-3 font-[family-name:var(--font-space-grotesk)]">
+          <h3 className="text-[10px] font-semibold tracking-widest text-white/30 uppercase mb-2 px-2 font-[family-name:var(--font-space-grotesk)]">
             {col.heading}
           </h3>
-          <div className="space-y-0.5">
+          <div className="space-y-px">
             {col.items.map((item) => (
               <MegaMenuItemRow key={item.label} item={item} />
             ))}
@@ -386,14 +386,14 @@ export default function Header() {
         style={{ height: 64 }}
       >
         <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-4 lg:px-6 relative">
-          {/* Logo */}
-          <div className="flex items-center shrink-0 logo">
+          {/* Logo Icon */}
+          <div className="flex items-center shrink-0">
             <Image
-              src="/images/logo.png"
+              src="/images/logo-icon.png"
               alt="AI Creative Studio"
-              width={90}
-              height={18}
-              style={{ width: 'auto', height: '18px' }}
+              width={36}
+              height={36}
+              style={{ width: '36px', height: '36px' }}
               className="object-contain"
               priority
             />
@@ -442,7 +442,7 @@ export default function Header() {
                   transition={{ duration: 0.15, ease: 'easeOut' }}
                   className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
                 >
-                  <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-5 w-[900px] max-h-[65vh] overflow-y-auto mega-menu-scroll">
+                  <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-4 w-[720px] max-h-[50vh] overflow-y-auto mega-menu-scroll">
                     <MegaMenuPanel data={MEGA_MENU_MAP[activeMenu]} />
                   </div>
                 </motion.div>
@@ -529,11 +529,11 @@ export default function Header() {
           <SheetHeader className="p-4 border-b border-white/5">
             <SheetTitle className="flex items-center gap-2.5 text-white">
               <Image
-                src="/images/logo.png"
+                src="/images/logo-icon.png"
                 alt="AI Creative Studio"
-                width={80}
-                height={16}
-                style={{ width: 'auto', height: '16px' }}
+                width={28}
+                height={28}
+                style={{ width: '28px', height: '28px' }}
                 className="object-contain"
               />
             </SheetTitle>
