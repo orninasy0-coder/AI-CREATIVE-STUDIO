@@ -1,0 +1,661 @@
+     1→'use client';
+     2→
+     3→import React, { useState, useEffect, useRef, useCallback, type ComponentType } from 'react';
+     4→import Image from 'next/image';
+     5→import { motion, AnimatePresence } from 'framer-motion';
+     6→import {
+     7→  Camera,
+     8→  Film,
+     9→  LayoutGrid,
+    10→  User,
+    11→  Sparkles,
+    12→  Image as ImageIcon,
+    13→  Sun,
+    14→  Paintbrush,
+    15→  Maximize,
+    16→  Smile,
+    17→  Users,
+    18→  Pen,
+    19→  Shirt,
+    20→  Video,
+    21→  Clapperboard,
+    22→  Layers,
+    23→  Scissors,
+    24→  MousePointerClick,
+    25→  TrendingUp,
+    26→  Mic,
+    27→  Pencil,
+    28→  Play,
+    29→  Wind,
+    30→  RefreshCw,
+    31→  Languages,
+    32→  Menu,
+    33→  ChevronDown,
+    34→  Volume2,
+    35→  Music,
+    36→  Headphones,
+    37→  Speaker,
+    38→  AudioLines,
+    39→  Plug,
+    40→  Cpu,
+    41→  Terminal,
+    42→  Webhook,
+    43→  Puzzle,
+    44→  Code2,
+    45→  Zap,
+    46→  type LucideIcon,
+    47→} from 'lucide-react';
+    48→import {
+    49→  OpenAIIcon,
+    50→  FluxIcon,
+    51→  MidjourneyIcon,
+    52→  GoogleIcon,
+    53→  KlingIcon,
+    54→  DeepMindIcon,
+    55→  RunwayIcon,
+    56→  ByteDanceIcon,
+    57→  HunyuanIcon,
+    58→  RecraftIcon,
+    59→  GrokIcon,
+    60→  SoraIcon,
+    61→  ElevenLabsIcon,
+    62→  MinimaxIcon,
+    63→  HailuoIcon,
+    64→  LumaIcon,
+    65→  PikaIcon,
+    66→  StabilityIcon,
+    67→  IdeogramIcon,
+    68→  SunoIcon,
+    69→  UdioIcon,
+    70→  CivitaiIcon,
+    71→  ComfyUIIcon,
+    72→  ReplicateIcon,
+    73→  DoubaoIcon,
+    74→  CogVideoIcon,
+    75→  ViduIcon,
+    76→  PixVerseIcon,
+    77→} from '@/components/icons/BrandIcons';
+    78→import {
+    79→  Sheet,
+    80→  SheetContent,
+    81→  SheetHeader,
+    82→  SheetTitle,
+    83→} from '@/components/ui/sheet';
+    84→
+    85→// ─── Types ──────────────────────────────────────────────────────────────────
+    86→
+    87→type BadgeType = 'TOP' | 'NEW' | 'OFF' | 'SOON' | null;
+    88→
+    89→// Icon can be either a Lucide icon or a brand icon
+    90→type IconComponent = LucideIcon | ComponentType<{ size?: number | string; color?: string; className?: string; style?: React.CSSProperties }>;
+    91→
+    92→interface MegaMenuItem {
+    93→  label: string;
+    94→  icon?: IconComponent;
+    95→  description?: string;
+    96→  badge?: BadgeType;
+    97→  isBrandIcon?: boolean;
+    98→}
+    99→
+   100→interface MegaMenuColumn {
+   101→  heading: string;
+   102→  items: MegaMenuItem[];
+   103→}
+   104→
+   105→interface MegaMenuData {
+   106→  columns: MegaMenuColumn[];
+   107→}
+   108→
+   109→// ─── Data ───────────────────────────────────────────────────────────────────
+   110→
+   111→const IMAGE_MEGA_MENU: MegaMenuData = {
+   112→  columns: [
+   113→    {
+   114→      heading: 'FEATURES',
+   115→      items: [
+   116→        { label: 'Create Image', icon: Camera, description: 'Generate AI images', badge: 'TOP' },
+   117→        { label: 'Cinematic Cameras', icon: Film, description: 'Image generation with camera controls', badge: 'TOP' },
+   118→        { label: 'Moodboard', icon: LayoutGrid, description: 'Turn your references into a focused moodboard' },
+   119→        { label: 'Soul ID Character', icon: User, description: 'Create unique character' },
+   120→        { label: 'AI Influencer', icon: Sparkles, description: 'Create and manage your AI influencer' },
+   121→        { label: 'Photodump', icon: ImageIcon, description: 'Generate Your Aesthetic', badge: 'NEW' },
+   122→        { label: 'Relight', icon: Sun, description: 'Adjust lighting position, color, and brightness' },
+   123→        { label: 'Inpaint', icon: Paintbrush, description: 'Select an area, describe the change' },
+   124→        { label: 'Image Upscale', icon: Maximize, description: 'Enhance image quality' },
+   125→        { label: 'Face Swap', icon: Smile, description: 'Create Realistic Face Swaps' },
+   126→        { label: 'Character Swap', icon: Users, description: 'Create Realistic Character Swaps' },
+   127→        { label: 'Draw to Edit', icon: Pen, description: 'From sketch to picture' },
+   128→        { label: 'Fashion Factory', icon: Shirt, description: 'Create fashion sets' },
+   129→      ],
+   130→    },
+   131→    {
+   132→      heading: 'MODELS',
+   133→      items: [
+   134→        { label: 'GPT Image 2', icon: OpenAIIcon, description: '4K images with near-perfect text rendering', badge: 'NEW', isBrandIcon: true },
+   135→        { label: 'GPT Image 1.5', icon: OpenAIIcon, description: 'True-color precision rendering', isBrandIcon: true },
+   136→        { label: 'Flux', icon: FluxIcon, description: 'State-of-the-art image generation', badge: 'TOP', isBrandIcon: true },
+   137→        { label: 'Reve', icon: Sparkles, description: 'Advanced image editing model' },
+   138→        { label: 'Seedream Lite', icon: DoubaoIcon, description: 'Intelligent visual reasoning', isBrandIcon: true },
+   139→        { label: 'Seedream', icon: DoubaoIcon, description: 'Professional image generation', isBrandIcon: true },
+   140→        { label: 'Midjourney', icon: MidjourneyIcon, description: 'Creative AI image generation', badge: 'TOP', isBrandIcon: true },
+   141→        { label: 'Ideogram', icon: IdeogramIcon, description: 'Text-in-image generation', badge: 'NEW', isBrandIcon: true },
+   142→        { label: 'Recraft', icon: RecraftIcon, description: 'Photorealistic and expressive generation', badge: 'NEW', isBrandIcon: true },
+   143→        { label: 'Stability AI', icon: StabilityIcon, description: 'Stable Diffusion models', isBrandIcon: true },
+   144→        { label: 'Grok Imagine', icon: GrokIcon, description: 'Versatile image styles by xAI', isBrandIcon: true },
+   145→        { label: 'Sora', icon: SoraIcon, description: 'Cinematic stills from your imagination', isBrandIcon: true },
+   146→        { label: 'Civitai', icon: CivitaiIcon, description: 'Community models & checkpoints', isBrandIcon: true },
+   147→        { label: 'ComfyUI', icon: ComfyUIIcon, description: 'Node-based image workflows', isBrandIcon: true },
+   148→      ],
+   149→    },
+   150→  ],
+   151→};
+   152→
+   153→const VIDEO_MEGA_MENU: MegaMenuData = {
+   154→  columns: [
+   155→    {
+   156→      heading: 'FEATURES',
+   157→      items: [
+   158→        { label: 'Create Video', icon: Video, description: 'Generate AI videos from text or image', badge: 'TOP' },
+   159→        { label: 'Cinema Studio', icon: Clapperboard, description: 'Cinematic videos with AI director', badge: 'TOP' },
+   160→        { label: 'Mixed Media', icon: Layers, description: 'Create mixed media video projects' },
+   161→        { label: 'Edit Video', icon: Scissors, description: 'Edit scenes, shots, elements' },
+   162→        { label: 'Click to Ad', icon: MousePointerClick, description: 'Turn product URLs into video ads' },
+   163→        { label: 'Sora Trends', icon: TrendingUp, description: 'Turn ideas into viral videos', badge: 'TOP' },
+   164→        { label: 'Lipsync Studio', icon: Mic, description: 'Create talking clips with perfect lip sync' },
+   165→        { label: 'Draw to Video', icon: Pen, description: 'Sketch turns into a cinema' },
+   166→        { label: 'Sketch to Video', icon: Pencil, description: 'From sketch to video with Sora 2' },
+   167→        { label: 'UGC Factory', icon: Users, description: 'Build UGC videos with AI avatars' },
+   168→        { label: 'Video Upscale', icon: Maximize, description: 'Enhance video quality up to 4K' },
+   169→        { label: 'Animate', icon: Play, description: 'Animate images and characters' },
+   170→        { label: 'Vibe Motion', icon: Wind, description: 'Create professional motion graphics' },
+   171→        { label: 'Recast Studio', icon: RefreshCw, description: 'Swap characters in videos' },
+   172→      ],
+   173→    },
+   174→    {
+   175→      heading: 'MODELS',
+   176→      items: [
+   177→        { label: 'Seedance 2.0', icon: ByteDanceIcon, description: 'Most advanced AI video model', badge: 'TOP', isBrandIcon: true },
+   178→        { label: 'Kling 3.0', icon: KlingIcon, description: 'Cinematic videos with audio', badge: 'TOP', isBrandIcon: true },
+   179→        { label: 'Kling Motion', icon: KlingIcon, description: 'Transfer motion from video to image', isBrandIcon: true },
+   180→        { label: 'Kling Edit', icon: KlingIcon, description: 'Advanced video editing', isBrandIcon: true },
+   181→        { label: 'Sora 2', icon: SoraIcon, description: "OpenAI's most advanced video model", badge: 'TOP', isBrandIcon: true },
+   182→        { label: 'Google Veo 3.1 Lite', icon: DeepMindIcon, description: 'Fast video generation by Google', badge: 'NEW', isBrandIcon: true },
+   183→        { label: 'Google Veo 3.1', icon: DeepMindIcon, description: 'Advanced AI video with sound', badge: 'TOP', isBrandIcon: true },
+   184→        { label: 'Runway Gen-3', icon: RunwayIcon, description: 'Hollywood-grade AI video', isBrandIcon: true },
+   185→        { label: 'Grok Video', icon: GrokIcon, description: 'Cinematic videos with synchronized audio', badge: 'NEW', isBrandIcon: true },
+   186→        { label: 'Hunyuan Video', icon: HunyuanIcon, description: 'AI video generation by Tencent', badge: 'NEW', isBrandIcon: true },
+   187→        { label: 'Minimax Hailuo', icon: HailuoIcon, description: 'Fastest high-dynamic video', isBrandIcon: true },
+   188→        { label: 'Seedance Pro', icon: ByteDanceIcon, description: 'Pro-grade audio-visual sync', isBrandIcon: true },
+   189→        { label: 'Luma Dream Machine', icon: LumaIcon, description: 'VFX and camera control', isBrandIcon: true },
+   190→        { label: 'CogVideoX', icon: CogVideoIcon, description: 'Text-to-video generation', isBrandIcon: true },
+   191→      ],
+   192→    },
+   193→  ],
+   194→};
+   195→
+   196→const AUDIO_MEGA_MENU: MegaMenuData = {
+   197→  columns: [
+   198→    {
+   199→      heading: 'FEATURES',
+   200→      items: [
+   201→        { label: 'Voiceover', icon: Mic, description: 'Generate natural speech from text' },
+   202→        { label: 'Change Voice', icon: RefreshCw, description: 'Swap voices in any audio or video' },
+   203→        { label: 'Translation', icon: Languages, description: 'Translate speech in any language' },
+   204→        { label: 'Sound Effects', icon: Volume2, description: 'Generate custom sound effects' },
+   205→        { label: 'Music Generation', icon: Music, description: 'Create original music tracks' },
+   206→        { label: 'Podcast Editor', icon: Headphones, description: 'AI-powered podcast editing' },
+   207→      ],
+   208→    },
+   209→    {
+   210→      heading: 'MODELS',
+   211→      items: [
+   212→        { label: 'Eleven v3', icon: ElevenLabsIcon, description: 'Expressive AI voice with emotion control', badge: 'TOP', isBrandIcon: true },
+   213→        { label: 'MiniMax Speech 2.8', icon: MinimaxIcon, description: 'Studio-quality text-to-speech', badge: 'TOP', isBrandIcon: true },
+   214→        { label: 'Seed Speech', icon: ByteDanceIcon, description: 'ByteDance multilingual text-to-speech', badge: 'NEW', isBrandIcon: true },
+   215→        { label: 'VibeVoice', icon: Sparkles, description: 'Long-form expressive voice synthesis', badge: 'NEW' },
+   216→        { label: 'Suno', icon: SunoIcon, description: 'AI music and song generation', isBrandIcon: true },
+   217→        { label: 'Udio', icon: UdioIcon, description: 'Professional audio mastering', isBrandIcon: true },
+   218→      ],
+   219→    },
+   220→  ],
+   221→};
+   222→
+   223→// Plugins mega menu
+   224→const PLUGINS_MEGA_MENU: MegaMenuData = {
+   225→  columns: [
+   226→    {
+   227→      heading: 'INTEGRATIONS',
+   228→      items: [
+   229→        { label: 'Supercomputer', icon: Cpu, description: 'Agents, automation, skills & connectors', badge: 'NEW' },
+   230→        { label: 'MCP & CLI', icon: Terminal, description: 'Turn Claude into a creative engine', badge: 'NEW' },
+   231→        { label: 'Webhooks', icon: Webhook, description: 'Connect to any service with webhooks' },
+   232→        { label: 'API Access', icon: Code2, description: 'Full REST API for developers' },
+   233→      ],
+   234→    },
+   235→    {
+   236→      heading: 'PLUGINS',
+   237→      items: [
+   238→        { label: 'Photoshop Plugin', icon: Puzzle, description: 'AI inside Adobe Photoshop', badge: 'SOON' },
+   239→        { label: 'Figma Plugin', icon: Puzzle, description: 'AI inside Figma', badge: 'SOON' },
+   240→        { label: 'Premiere Pro', icon: Puzzle, description: 'AI inside Adobe Premiere', badge: 'SOON' },
+   241→        { label: 'After Effects', icon: Puzzle, description: 'AI inside After Effects', badge: 'SOON' },
+   242→        { label: 'Blender Plugin', icon: Puzzle, description: 'AI inside Blender', badge: 'SOON' },
+   243→        { label: 'VS Code Extension', icon: Code2, description: 'AI in your code editor', badge: 'SOON' },
+   244→      ],
+   245→    },
+   246→  ],
+   247→};
+   248→
+   249→const MEGA_MENU_MAP: Record<string, MegaMenuData> = {
+   250→  Image: IMAGE_MEGA_MENU,
+   251→  Video: VIDEO_MEGA_MENU,
+   252→  Audio: AUDIO_MEGA_MENU,
+   253→  Plugins: PLUGINS_MEGA_MENU,
+   254→};
+   255→
+   256→// ─── Nav Items (split into left and right) ──────────────────────────────────
+   257→
+   258→interface NavItem {
+   259→  label: string;
+   260→  hasMegaMenu?: boolean;
+   261→  badge?: BadgeType;
+   262→  badgeText?: string;
+   263→  separator?: boolean;
+   264→  showGridIcon?: boolean; // 2x2 grid icon before label
+   265→}
+   266→
+   267→const LEFT_NAV_ITEMS: NavItem[] = [
+   268→  { label: 'Explore' },
+   269→  { label: 'Image', hasMegaMenu: true },
+   270→  { label: 'Video', hasMegaMenu: true },
+   271→  { label: 'Audio', hasMegaMenu: true },
+   272→  { label: 'Supercomputer', badge: 'NEW', separator: true, showGridIcon: true },
+   273→  { label: 'MCP & CLI', badge: 'NEW' },
+   274→  { label: 'Colab' },
+   275→  { label: 'Plugins', badge: 'SOON', badgeText: 'SOON', hasMegaMenu: true, separator: true },
+   276→  { label: 'Marketing Studio', separator: true },
+   277→  { label: 'Cinema Studio' },
+   278→  { label: 'AI Influencer' },
+   279→  { label: 'Canvas', separator: true },
+   280→  { label: 'Apps' },
+   281→];
+   282→
+   283→const RIGHT_NAV_ITEMS: NavItem[] = [
+   284→  { label: 'Pricing', badge: 'OFF', badgeText: '30% OFF' },
+   285→];
+   286→
+   287→// ─── Badge Component ────────────────────────────────────────────────────────
+   288→
+   289→function Badge({ type, text }: { type: BadgeType; text?: string }) {
+   290→  if (!type) return null;
+   291→  const classes =
+   292→    type === 'TOP'
+   293→      ? 'bg-[#FF3366] text-white'
+   294→      : type === 'NEW'
+   295→        ? 'bg-[#D7FF00] text-black'
+   296→        : type === 'SOON'
+   297→          ? 'bg-white/10 text-white/70 border border-white/10'
+   298→          : 'bg-[#FF3366] text-white';
+   299→
+   300→  return (
+   301→    <span
+   302→      className={`${classes} text-[9px] font-bold px-1.5 py-0.5 rounded leading-none tracking-wider uppercase shrink-0`}
+   303→    >
+   304→      {text || type}
+   305→    </span>
+   306→  );
+   307→}
+   308→
+   309→// ─── Grid Icon (2x2 dots for Supercomputer) ────────────────────────────────
+   310→
+   311→function GridDotsIcon({ size = 14 }: { size?: number }) {
+   312→  return (
+   313→    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+   314→      <rect x="1" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" />
+   315→      <rect x="8" y="1" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.7" />
+   316→      <rect x="1" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.7" />
+   317→      <rect x="8" y="8" width="5" height="5" rx="1.5" fill="#D7FF00" opacity="0.4" />
+   318→    </svg>
+   319→  );
+   320→}
+   321→
+   322→// ─── Mega Menu Item ─────────────────────────────────────────────────────────
+   323→
+   324→function MegaMenuItemRow({ item }: { item: MegaMenuItem }) {
+   325→  const IconComp = item.icon;
+   326→  return (
+   327→    <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+   328→      {IconComp && (
+   329→        <div className="flex items-center justify-center w-7 h-7 rounded-md bg-white/5 group-hover:bg-white/10 transition-colors shrink-0">
+   330→          {item.isBrandIcon ? (
+   331→            <IconComp size={14} color="#fff" />
+   332→          ) : (
+   333→            <IconComp className="w-3.5 h-3.5 text-white/70 group-hover:text-[#D7FF00] transition-colors" size={14} />
+   334→          )}
+   335→        </div>
+   336→      )}
+   337→      <div className="flex-1 min-w-0">
+   338→        <div className="flex items-center gap-1.5">
+   339→          <span className="text-[13px] font-medium text-white group-hover:text-[#D7FF00] transition-colors">
+   340→            {item.label}
+   341→          </span>
+   342→          {item.badge && <Badge type={item.badge} />}
+   343→        </div>
+   344→        {item.description && (
+   345→          <p className="text-[11px] text-white/35 mt-0.5 leading-snug">
+   346→            {item.description}
+   347→          </p>
+   348→        )}
+   349→      </div>
+   350→    </div>
+   351→  );
+   352→}
+   353→
+   354→// ─── Mega Menu Panel ────────────────────────────────────────────────────────
+   355→
+   356→function MegaMenuPanel({ data }: { data: MegaMenuData }) {
+   357→  return (
+   358→    <div className="flex gap-0">
+   359→      {data.columns.map((col, colIdx) => (
+   360→        <div
+   361→          key={col.heading}
+   362→          className={`flex-1 min-w-0 ${colIdx > 0 ? 'border-l border-white/5 pl-4' : 'pr-4'}`}
+   363→        >
+   364→          <h3 className="text-[10px] font-semibold tracking-widest text-white/30 uppercase mb-2 px-2 font-[family-name:var(--font-space-grotesk)]">
+   365→            {col.heading}
+   366→          </h3>
+   367→          <div className="space-y-px">
+   368→            {col.items.map((item) => (
+   369→              <MegaMenuItemRow key={item.label} item={item} />
+   370→            ))}
+   371→          </div>
+   372→        </div>
+   373→      ))}
+   374→    </div>
+   375→  );
+   376→}
+   377→
+   378→// ─── Mobile Accordion Item ──────────────────────────────────────────────────
+   379→
+   380→function MobileMegaMenuSection({ label, data, isOpen, onToggle, badge, badgeText }: { label: string; data: MegaMenuData; isOpen: boolean; onToggle: () => void; badge?: BadgeType; badgeText?: string }) {
+   381→  return (
+   382→    <div>
+   383→      <button
+   384→        onClick={onToggle}
+   385→        className="flex items-center justify-between w-full py-3 text-sm font-medium text-white hover:text-[#D7FF00] transition-colors"
+   386→      >
+   387→        <span className="flex items-center gap-2">
+   388→          {label}
+   389→          {badge && <Badge type={badge} text={badgeText} />}
+   390→        </span>
+   391→        <motion.div
+   392→          animate={{ rotate: isOpen ? 180 : 0 }}
+   393→          transition={{ duration: 0.2 }}
+   394→        >
+   395→          <ChevronDown className="w-4 h-4" />
+   396→        </motion.div>
+   397→      </button>
+   398→      <AnimatePresence>
+   399→        {isOpen && (
+   400→          <motion.div
+   401→            initial={{ height: 0, opacity: 0 }}
+   402→            animate={{ height: 'auto', opacity: 1 }}
+   403→            exit={{ height: 0, opacity: 0 }}
+   404→            transition={{ duration: 0.25, ease: 'easeInOut' }}
+   405→            className="overflow-hidden"
+   406→          >
+   407→            {data.columns.map((col) => (
+   408→              <div key={col.heading} className="mb-4">
+   409→                <h4 className="text-[10px] font-semibold tracking-widest text-white/30 uppercase mb-2 px-3 font-[family-name:var(--font-space-grotesk)]">
+   410→                  {col.heading}
+   411→                </h4>
+   412→                <div className="space-y-0.5">
+   413→                  {col.items.map((item) => (
+   414→                    <div
+   415→                      key={item.label}
+   416→                      className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+   417→                    >
+   418→                      {item.icon && (
+   419→                        item.isBrandIcon ? (
+   420→                          <item.icon size={14} color="#fff" />
+   421→                        ) : (
+   422→                          <item.icon className="w-4 h-4 text-white/50 shrink-0" size={14} />
+   423→                        )
+   424→                      )}
+   425→                      <span className="text-sm text-white/80">{item.label}</span>
+   426→                      {item.badge && <Badge type={item.badge} />}
+   427→                    </div>
+   428→                  ))}
+   429→                </div>
+   430→              </div>
+   431→            ))}
+   432→          </motion.div>
+   433→        )}
+   434→      </AnimatePresence>
+   435→    </div>
+   436→  );
+   437→}
+   438→
+   439→// ─── Main Header ────────────────────────────────────────────────────────────
+   440→
+   441→export default function Header() {
+   442→  const [scrolled, setScrolled] = useState(false);
+   443→  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+   444→  const [mobileOpen, setMobileOpen] = useState(false);
+   445→  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+   446→  const hoverZoneRef = useRef<HTMLDivElement>(null);
+   447→
+   448→  useEffect(() => {
+   449→    const handleScroll = () => {
+   450→      setScrolled(window.scrollY > 10);
+   451→    };
+   452→    window.addEventListener('scroll', handleScroll, { passive: true });
+   453→    return () => window.removeEventListener('scroll', handleScroll);
+   454→  }, []);
+   455→
+   456→  useEffect(() => {
+   457→    const handleResize = () => {
+   458→      if (window.innerWidth >= 1024) {
+   459→        setMobileOpen(false);
+   460→      }
+   461→    };
+   462→    window.addEventListener('resize', handleResize);
+   463→    return () => window.removeEventListener('resize', handleResize);
+   464→  }, []);
+   465→
+   466→  const handleMobileToggle = useCallback((label: string) => {
+   467→    setMobileExpanded((prev) => (prev === label ? null : label));
+   468→  }, []);
+   469→
+   470→  const ALL_NAV_ITEMS = [...LEFT_NAV_ITEMS, ...RIGHT_NAV_ITEMS];
+   471→
+   472→  return (
+   473→    <>
+   474→      <header
+   475→        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+   476→          scrolled
+   477→            ? 'bg-[rgba(10,10,10,0.95)] backdrop-blur-xl border-b border-white/5'
+   478→            : 'bg-transparent'
+   479→        }`}
+   480→        style={{ height: 64 }}
+   481→      >
+   482→        <div className="flex items-center h-full max-w-[1440px] mx-auto px-4 lg:px-6 relative">
+   483→          {/* Logo Icon */}
+   484→          <div className="flex items-center shrink-0">
+   485→            <Image
+   486→              src="/images/logo-icon.png"
+   487→              alt="AI Creative Studio"
+   488→              width={36}
+   489→              height={36}
+   490→              style={{ width: '36px', height: '36px' }}
+   491→              className="object-contain"
+   492→              priority
+   493→            />
+   494→          </div>
+   495→
+   496→          {/* Left Navigation */}
+   497→          <div
+   498→            ref={hoverZoneRef}
+   499→            className="hidden lg:flex items-center gap-0.5 ml-4 flex-1 min-w-0"
+   500→            onMouseLeave={() => setActiveMenu(null)}
+   501→          >
+   502→            {LEFT_NAV_ITEMS.map((item) => (
+   503→              <div key={item.label} className="relative flex items-center shrink-0">
+   504→                {item.separator && (
+   505→                  <div className="w-px h-4 bg-white/10 mx-1.5" />
+   506→                )}
+   507→                <button
+   508→                  className={`flex items-center gap-1 px-2.5 py-1.5 text-sm text-white hover:text-[#D7FF00] transition-colors rounded-md whitespace-nowrap ${
+   509→                    activeMenu === item.label ? 'text-[#D7FF00]' : ''
+   510→                  }`}
+   511→                  onMouseEnter={() => {
+   512→                    if (item.hasMegaMenu) {
+   513→                      setActiveMenu(item.label);
+   514→                    } else {
+   515→                      setActiveMenu(null);
+   516→                    }
+   517→                  }}
+   518→                >
+   519→                  {item.showGridIcon && <GridDotsIcon size={12} />}
+   520→                  {item.label}
+   521→                  {item.hasMegaMenu && (
+   522→                    <ChevronDown
+   523→                      className={`w-3 h-3 transition-transform duration-200 ${
+   524→                        activeMenu === item.label ? 'rotate-180' : ''
+   525→                      }`}
+   526→                    />
+   527→                  )}
+   528→                  {item.badge && <Badge type={item.badge} text={item.badgeText} />}
+   529→                </button>
+   530→
+   531→                {/* Mega Menu Dropdown */}
+   532→                <AnimatePresence>
+   533→                  {item.hasMegaMenu && activeMenu === item.label && MEGA_MENU_MAP[item.label] && (
+   534→                    <motion.div
+   535→                      initial={{ opacity: 0, y: -4 }}
+   536→                      animate={{ opacity: 1, y: 0 }}
+   537→                      exit={{ opacity: 0, y: -4 }}
+   538→                      transition={{ duration: 0.15, ease: 'easeOut' }}
+   539→                      className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
+   540→                    >
+   541→                      <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-4 w-[720px] max-h-[50vh] overflow-y-auto mega-menu-scroll">
+   542→                        <MegaMenuPanel data={MEGA_MENU_MAP[item.label]} />
+   543→                      </div>
+   544→                    </motion.div>
+   545→                  )}
+   546→                </AnimatePresence>
+   547→              </div>
+   548→            ))}
+   549→          </div>
+   550→
+   551→          {/* Right Side: Pricing + Login + Signup */}
+   552→          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
+   553→            {/* Pricing nav item */}
+   554→            {RIGHT_NAV_ITEMS.map((item) => (
+   555→              <button
+   556→                key={item.label}
+   557→                className="flex items-center gap-1 px-2.5 py-1.5 text-sm text-white hover:text-[#D7FF00] transition-colors rounded-md whitespace-nowrap"
+   558→              >
+   559→                {item.label}
+   560→                {item.badge && <Badge type={item.badge} text={item.badgeText} />}
+   561→              </button>
+   562→            ))}
+   563→            <div className="w-px h-4 bg-white/10 mx-1" />
+   564→            <button className="text-sm text-white hover:text-[#D7FF00] transition-colors">
+   565→              Login
+   566→            </button>
+   567→            <button className="bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
+   568→              Sign Up
+   569→            </button>
+   570→          </div>
+   571→
+   572→          {/* Mobile menu button */}
+   573→          <div className="flex items-center gap-3 lg:hidden ml-auto">
+   574→            <button className="bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#c5ee00] transition-colors whitespace-nowrap">
+   575→              Sign Up
+   576→            </button>
+   577→            <button
+   578→              className="text-white p-1.5 hover:bg-white/5 rounded-md transition-colors"
+   579→              onClick={() => setMobileOpen(true)}
+   580→              aria-label="Open menu"
+   581→            >
+   582→              <Menu className="w-5 h-5" />
+   583→            </button>
+   584→          </div>
+   585→        </div>
+   586→      </header>
+   587→
+   588→      {/* Backdrop when mega menu is open */}
+   589→      <AnimatePresence>
+   590→        {activeMenu && (
+   591→          <motion.div
+   592→            initial={{ opacity: 0 }}
+   593→            animate={{ opacity: 1 }}
+   594→            exit={{ opacity: 0 }}
+   595→            transition={{ duration: 0.15 }}
+   596→            className="fixed inset-0 top-16 z-30 bg-black/40 backdrop-blur-sm"
+   597→            onMouseEnter={() => setActiveMenu(null)}
+   598→          />
+   599→        )}
+   600→      </AnimatePresence>
+   601→
+   602→      {/* Mobile Sheet Menu */}
+   603→      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+   604→        <SheetContent
+   605→          side="left"
+   606→          className="bg-[#0A0A0A] border-white/5 text-white w-[320px] sm:w-[380px] p-0"
+   607→        >
+   608→          <SheetHeader className="p-4 border-b border-white/5">
+   609→            <SheetTitle className="flex items-center gap-2.5 text-white">
+   610→              <Image
+   611→                src="/images/logo-icon.png"
+   612→                alt="AI Creative Studio"
+   613→                width={28}
+   614→                height={28}
+   615→                style={{ width: '28px', height: '28px' }}
+   616→                className="object-contain"
+   617→              />
+   618→            </SheetTitle>
+   619→          </SheetHeader>
+   620→
+   621→          <div className="flex-1 overflow-y-auto mega-menu-scroll p-4 space-y-0.5">
+   622→            {ALL_NAV_ITEMS.map((item) =>
+   623→              item.hasMegaMenu && MEGA_MENU_MAP[item.label] ? (
+   624→                <MobileMegaMenuSection
+   625→                  key={item.label}
+   626→                  label={item.label}
+   627→                  data={MEGA_MENU_MAP[item.label]}
+   628→                  isOpen={mobileExpanded === item.label}
+   629→                  onToggle={() => handleMobileToggle(item.label)}
+   630→                  badge={item.badge}
+   631→                  badgeText={item.badgeText}
+   632→                />
+   633→              ) : (
+   634→                <div
+   635→                  key={item.label}
+   636→                  className="flex items-center justify-between py-3 px-0"
+   637→                >
+   638→                  <span className="text-sm font-medium text-white hover:text-[#D7FF00] transition-colors cursor-pointer flex items-center gap-1.5">
+   639→                    {item.showGridIcon && <GridDotsIcon size={12} />}
+   640→                    {item.label}
+   641→                  </span>
+   642→                  {item.badge && <Badge type={item.badge} text={item.badgeText} />}
+   643→                </div>
+   644→              )
+   645→            )}
+   646→          </div>
+   647→
+   648→          <div className="border-t border-white/5 p-4 space-y-3">
+   649→            <button className="w-full text-sm text-white hover:text-[#D7FF00] transition-colors py-2.5 text-left">
+   650→              Login
+   651→            </button>
+   652→            <button className="w-full bg-[#D7FF00] text-black text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-[#c5ee00] transition-colors">
+   653→              Sign Up
+   654→            </button>
+   655→          </div>
+   656→        </SheetContent>
+   657→      </Sheet>
+   658→    </>
+   659→  );
+   660→}
+   661→
