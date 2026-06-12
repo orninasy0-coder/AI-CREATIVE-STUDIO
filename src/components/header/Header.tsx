@@ -429,25 +429,25 @@ export default function Header() {
                   )}
                   {item.badge && <Badge type={item.badge} />}
                 </button>
+
+                {/* Mega Menu Dropdown - inside each nav item */}
+                <AnimatePresence>
+                  {item.hasMegaMenu && activeMenu === item.label && MEGA_MENU_MAP[item.label] && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15, ease: 'easeOut' }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
+                    >
+                      <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-4 w-[720px] max-h-[50vh] overflow-y-auto mega-menu-scroll">
+                        <MegaMenuPanel data={MEGA_MENU_MAP[item.label]} />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))}
-
-            {/* Mega Menu Dropdown - inside the hover zone */}
-            <AnimatePresence>
-              {activeMenu && MEGA_MENU_MAP[activeMenu] && (
-                <motion.div
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.15, ease: 'easeOut' }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
-                >
-                  <div className="bg-[rgba(10,10,10,0.98)] backdrop-blur-2xl rounded-xl border border-white/5 shadow-2xl shadow-black/50 p-4 w-[720px] max-h-[50vh] overflow-y-auto mega-menu-scroll">
-                    <MegaMenuPanel data={MEGA_MENU_MAP[activeMenu]} />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Right Side Actions */}
